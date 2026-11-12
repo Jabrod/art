@@ -137,6 +137,34 @@ export interface ChatMessage {
   createdAt: string
 }
 
+export type Currency = "INR" | "USD"
+export type Interval = "month" | "year"
+
+/** Art Pro prices in minor units (paise / cents). The server's answer wins when it has one. */
+export const ART_PRO_PRICES: Record<Currency, Record<Interval, number>> = {
+  INR: { month: 99900, year: 799900 },
+  USD: { month: 1200, year: 9600 },
+}
+
+/** The person's plan and what they can buy (GET /api/art/billing). */
+export interface Billing {
+  /** the currency to show first (by country) */
+  currency: Currency
+  prices: Record<Currency, Record<Interval, number>>
+  /** whether checkout is set up for each currency and interval in this payment mode */
+  available: Record<Currency, Record<Interval, boolean>>
+  mode: "test" | "live"
+  plan: {
+    pro: boolean
+    /** when Pro ends (ISO), if it does */
+    until: string | null
+    subscribed: boolean
+    status: string | null
+    interval: Interval | null
+    nextBillingAt: string | null
+  }
+}
+
 export interface UploadInfo {
   kind: MediaKind
   width?: number
@@ -165,6 +193,14 @@ export interface BoardStore {
   startVideo(req: VideoRequest): Promise<{ job: string; credits: Credits }>
   videoStatus(job: string, boardId: string | null, prompt?: string): Promise<VideoStatus>
   listAssets(kind?: MediaKind, before?: string): Promise<LibraryAsset[]>
+  /** The plan and prices, or null where billing isn't available (local mode, older backend). */
+  billing(): Promise<Billing | null>
+  /** A Dodo checkout session for Art Pro that returns to `returnPath` (a /studio path). */
+  startCheckout(interval: Interval, currency: Currency, returnPath: string): Promise<{ checkoutUrl: string }>
+  /** Applies a finished checkout (the subscription id Dodo adds to the return URL). */
+  syncCheckout(subscriptionId: string): Promise<{ status: string | null }>
+  /** Dodo's customer portal: payment method, invoices, cancel. */
+  billingPortal(): Promise<{ url: string }>
   listChats(opts?: { q?: string; boardId?: string }): Promise<Chat[]>
   createChat(opts: { model?: string; boardId?: string | null }): Promise<Chat>
   getChat(id: string): Promise<{ chat: Chat; messages: ChatMessage[] }>

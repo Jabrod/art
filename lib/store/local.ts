@@ -95,6 +95,14 @@ export const localStore: BoardStore = {
   },
   videoStatus: async () => ({ status: "error", error: LOCAL_ONLY }),
   listAssets: async () => [],
+  billing: async () => null,
+  startCheckout: async () => {
+    throw new ArtError("Plans are on art.jabrod.com with a Jabrod account. This studio is in local mode.", "local_mode")
+  },
+  syncCheckout: async () => ({ status: null }),
+  billingPortal: async () => {
+    throw new ArtError("Plans are on art.jabrod.com with a Jabrod account.", "local_mode")
+  },
   listChats: async () => [],
   createChat: async () => {
     throw new ArtError("The assistant runs on art.jabrod.com with a Jabrod account. This studio is in local mode.", "local_mode")

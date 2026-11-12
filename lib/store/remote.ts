@@ -6,7 +6,7 @@
 import { upload as blobUpload } from "@vercel/blob/client"
 import type { AssetRef, BoardDoc } from "@/lib/board"
 import { parseBoardDoc } from "@/lib/board"
-import { ArtError, type Board, type BoardStore, type BoardSummary, type Chat, type ChatMessage, type LibraryAsset, type Me, type Models, type SaveResult } from "./types"
+import { ArtError, type Board, type BoardStore, type BoardSummary, type Chat, type ChatMessage, type Billing, type LibraryAsset, type Me, type Models, type SaveResult } from "./types"
 
 const BASE = `${process.env.NEXT_PUBLIC_ART_API ?? ""}/api/art`
 
@@ -96,6 +96,26 @@ export const remoteStore: BoardStore = {
     if (before) q.set("before", before)
     return (await call<{ assets: LibraryAsset[] }>(`/assets?${q}`)).assets
   },
+  billing: async () => {
+    try {
+      return await call<Billing>("/billing")
+    } catch (error) {
+      // a backend without the billing API yet: the dialog falls back to the plan page
+      if (error instanceof ArtError && error.status === 404) return null
+      throw error
+    }
+  },
+  startCheckout: async (interval, currency, returnPath) => {
+    try {
+      return await call<{ checkoutUrl: string }>("/billing/checkout", { method: "POST", json: { interval, currency, returnPath } })
+    } catch (error) {
+      // Older backend: the plan page on this host starts the same checkout.
+      if (error instanceof ArtError && error.status === 404) return { checkoutUrl: `/pro?interval=${interval}&currency=${currency.toLowerCase()}` }
+      throw error
+    }
+  },
+  syncCheckout: (subscriptionId) => call("/billing/sync", { method: "POST", json: { subscriptionId } }),
+  billingPortal: () => call("/billing/portal", { method: "POST" }),
   listChats: async (opts = {}) => {
     const q = new URLSearchParams()
     if (opts.q) q.set("q", opts.q)

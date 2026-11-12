@@ -28,6 +28,10 @@ interface AppState {
   /** bumped by "New chat" so the new-chat page starts over (its address may already be /c/<id>) */
   chatNonce: number
   newChat(): void
+  /** the plans dialog; `reason` is shown at its top (e.g. why credits ran out) */
+  plans: { open: boolean; reason?: string }
+  openPlans(reason?: string): void
+  closePlans(): void
   loadMe(): Promise<void>
   loadModels(): Promise<void>
   loadChats(): Promise<void>
@@ -51,6 +55,9 @@ export const useApp = create<AppState>((set, get) => ({
   sidebarOpen: true,
   chatNonce: 0,
   newChat: () => set({ chatNonce: get().chatNonce + 1 }),
+  plans: { open: false },
+  openPlans: (reason) => set({ plans: { open: true, reason } }),
+  closePlans: () => set({ plans: { open: false } }),
   loadMe: async () => {
     try {
       set({ me: await store.me(), meError: null })

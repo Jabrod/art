@@ -15,7 +15,10 @@ function fail(id: string, e: unknown) {
   const message = e instanceof ArtError || e instanceof Error ? e.message : "That didn't work. Try again."
   board().update(id, { status: "error", error: message })
   app().toast(message, "error")
-  if (e instanceof ArtError && (e.code === "insufficient_credits" || e.code === "limit_reached")) app().loadMe()
+  if (e instanceof ArtError && (e.code === "insufficient_credits" || e.code === "limit_reached" || e.code === "pro_required")) {
+    app().loadMe()
+    app().openPlans(message)
+  }
 }
 
 export async function runNode(id: string) {

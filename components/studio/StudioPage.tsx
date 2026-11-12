@@ -165,7 +165,10 @@ export function StudioPage({ kind }: { kind: MediaKind }) {
       }
     } catch (e) {
       toast(e instanceof ArtError || e instanceof Error ? e.message : "That didn't work. Try again.", "error")
-      if (e instanceof ArtError && e.code === "insufficient_credits") loadMe()
+      if (e instanceof ArtError && (e.code === "insufficient_credits" || e.code === "pro_required")) {
+        loadMe()
+        useApp.getState().openPlans(e.message)
+      }
     } finally {
       setPending((p) => p.filter((x) => !tempIds.includes(x.id)))
       setBusy(false)

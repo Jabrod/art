@@ -2,6 +2,8 @@
 
 import { useEffect } from "react"
 import { useApp, pub } from "@/lib/app-state"
+import { store } from "@/lib/store"
+import { PlansDialog } from "./PlansDialog"
 import { Sidebar } from "./Sidebar"
 import { Toasts } from "./Toasts"
 
@@ -18,6 +20,35 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     if (me?.signedIn) loadChats()
   }, [me?.signedIn, loadChats])
 
+  // /studio?plans opens the plans dialog (links from JBD, emails, the website).
+  useEffect(() => {
+    if (!me?.signedIn) return
+    const url = new URL(window.location.href)
+    if (!url.searchParams.has("plans")) return
+    url.searchParams.delete("plans")
+    window.history.replaceState(null, "", url.pathname + url.search + url.hash)
+    useApp.getState().openPlans()
+  }, [me?.signedIn])
+
+  // Back from Dodo's checkout (?subscription_id=…&status=…): apply it, say so, tidy the address.
+  useEffect(() => {
+    if (!me?.signedIn) return
+    const url = new URL(window.location.href)
+    const sub = url.searchParams.get("subscription_id")
+    if (!sub) return
+    for (const k of ["subscription_id", "status", "payment_id", "email", "license_key"]) url.searchParams.delete(k)
+    window.history.replaceState(null, "", url.pathname + (url.search === "?" ? "" : url.search) + url.hash)
+    const { toast } = useApp.getState()
+    store
+      .syncCheckout(sub)
+      .then(({ status }) => {
+        if (status === "active") toast("You're on Art Pro. Your 1,000 monthly AI credits are ready.", "ok")
+        else toast("The payment didn't go through. Nothing was charged; you can try again from See plans.", "error")
+        loadMe()
+      })
+      .catch(() => toast("Couldn't confirm the payment yet. If you paid, Pro switches on within a minute.", "info"))
+  }, [me?.signedIn, loadMe])
+
   if (meError) return <Centered title="Can't reach Jabrod" body={meError} action={<button className="btn-primary" onClick={() => loadMe()}>Try again</button>} />
   if (!me) return <Loading />
   if (!me.signedIn) return <SignIn href={me.signInUrl ?? "/sign-in?next=/studio"} />
@@ -26,6 +57,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <div className="flex h-dvh w-full overflow-hidden bg-ink">
       <Sidebar />
       <main className="relative min-w-0 flex-1">{children}</main>
+      <PlansDialog />
       <Toasts />
     </div>
   )
@@ -70,7 +102,7 @@ function SignIn({ href }: { href: string }) {
           Generate. <span className="paint-text">Edit.</span>
         </h1>
         <p className="mx-auto mt-5 max-w-sm text-[15px] leading-7 text-[var(--muted)]">
-          Chat, make images, video and voice, and connect it all on one infinite canvas. Sign in with your Jabrod account to start.
+          Images, video and voice, together on one canvas.
         </p>
         <a href={href} className="btn-primary mt-8 inline-flex">Sign in to Jabrod</a>
         <p className="mt-4 text-xs text-[var(--faint)]">Free every month: 50 AI credits. Open source on GitHub.</p>

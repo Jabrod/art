@@ -31,7 +31,7 @@ function groupByDay(chats: { updatedAt: string }[]) {
 export function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
-  const { me, chats, chatsLoaded, sidebarOpen, setSidebar, removeChat, toast, newChat } = useApp()
+  const { me, chats, chatsLoaded, sidebarOpen, setSidebar, removeChat, toast, newChat, openPlans } = useApp()
   const [q, setQ] = useState("")
   const [searching, setSearching] = useState(false)
 
@@ -140,23 +140,21 @@ export function Sidebar() {
       <div className="border-t border-[var(--line)] p-3">
         {credits && store.mode === "remote" && (
           <div className="rounded-2xl border border-[var(--line)] bg-white/[0.02] p-3">
-            <div className="flex items-center justify-between">
+            <button onClick={() => openPlans()} className="-m-1 flex w-[calc(100%+8px)] items-center justify-between rounded-lg p-1 text-left hover:bg-white/[0.03]" title="See plans">
               <span className="flex items-center gap-1.5 text-[13px] text-cream/85">
-                <Sparkles className="size-3.5 text-violet" /> {credits.pro ? "JBD Pro" : "Free plan"}
+                <Sparkles className="size-3.5 text-violet" /> {credits.pro ? "Art Pro" : "Free plan"}
               </span>
               <span className="font-mono text-[11px] text-[var(--faint)]">
                 {credits.left}/{credits.limit}
               </span>
-            </div>
+            </button>
             <div className="mt-2 h-1 overflow-hidden rounded-full bg-white/[0.06]">
               <div className="paint-bg h-full rounded-full transition-[width] duration-500" style={{ width: `${100 - pct}%` }} />
             </div>
             <p className="mt-2 text-[11.5px] text-[var(--faint)]">credits left this month</p>
-            {!credits.pro && (
-              <a href="https://jabrod.com/art#plans" className="mt-3 flex h-9 items-center justify-center rounded-xl bg-cream text-[13px] font-medium text-ink hover:bg-white">
-                See plans
-              </a>
-            )}
+            <button onClick={() => openPlans()} className={`mt-3 flex h-9 w-full items-center justify-center rounded-xl text-[13px] font-medium ${credits.pro ? "border border-[var(--line)] text-cream/80 hover:bg-white/[0.04]" : "bg-cream text-ink hover:bg-white"}`}>
+              {credits.pro ? "Your plan" : "See plans"}
+            </button>
           </div>
         )}
         {store.mode === "local" && <p className="rounded-2xl border border-[var(--line)] p-3 text-[12px] leading-5 text-[var(--muted)]">Local mode: boards stay in this browser. AI needs art.jabrod.com.</p>}

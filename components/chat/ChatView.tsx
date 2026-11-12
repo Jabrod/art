@@ -134,7 +134,10 @@ export function ChatView({ chatId: initialId, boardId, compact, onAddPrompt, onC
         const message = e instanceof ArtError || e instanceof Error ? e.message : "The assistant couldn't answer. Try again."
         setMessages((m) => m.filter((x) => !(x.id === replyId && !x.content)))
         toast(message, "error")
-        if (e instanceof ArtError && e.code === "insufficient_credits") loadMe()
+        if (e instanceof ArtError && (e.code === "insufficient_credits" || e.code === "pro_required")) {
+          loadMe()
+          useApp.getState().openPlans(message)
+        }
         setInput((cur) => cur || text)
       } finally {
         abortRef.current = null
