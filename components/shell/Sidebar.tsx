@@ -153,8 +153,8 @@ export function Sidebar() {
             </div>
             <p className="mt-2 text-[11.5px] text-[var(--faint)]">credits left this month</p>
             {!credits.pro && (
-              <a href="/pro" className="mt-3 flex h-9 items-center justify-center rounded-xl bg-cream text-[13px] font-medium text-ink hover:bg-white">
-                Get Art Pro: 1,000 credits a month
+              <a href="https://jabrod.com/art#plans" className="mt-3 flex h-9 items-center justify-center rounded-xl bg-cream text-[13px] font-medium text-ink hover:bg-white">
+                See plans
               </a>
             )}
           </div>
