@@ -12,6 +12,7 @@ export function BoardPicker({ items, label = "Add to board", className = "btn-gh
   const [open, setOpen] = useState(false)
   const [boards, setBoards] = useState<BoardSummary[] | null>(null)
   const [busy, setBusy] = useState(false)
+  const [below, setBelow] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const toast = useApp((s) => s.toast)
   const router = useRouter()
@@ -46,11 +47,20 @@ export function BoardPicker({ items, label = "Add to board", className = "btn-gh
 
   return (
     <div ref={ref} className="relative">
-      <button className={className} onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-haspopup="menu">
+      <button
+        className={className}
+        onClick={() => {
+          // open below when there isn't room for the menu above the button
+          setBelow((ref.current?.getBoundingClientRect().top ?? 999) < 340)
+          setOpen((o) => !o)
+        }}
+        aria-expanded={open}
+        aria-haspopup="menu"
+      >
         <LayoutGrid className="size-3.5" /> {label}
       </button>
       {open && (
-        <div role="menu" className={`rise absolute bottom-full z-50 mb-2 w-64 overflow-hidden rounded-2xl border border-[var(--line-strong)] bg-ink-3 p-1.5 shadow-[0_16px_50px_rgba(0,0,0,0.6)] ${align === "right" ? "right-0" : "left-0"}`}>
+        <div role="menu" className={`rise absolute z-50 w-64 ${below ? "top-full mt-2" : "bottom-full mb-2"} overflow-hidden rounded-2xl border border-[var(--line-strong)] bg-ink-3 p-1.5 shadow-[0_16px_50px_rgba(0,0,0,0.6)] ${align === "right" ? "right-0" : "left-0"}`}>
           <button disabled={busy} onClick={() => add(null)} className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-[13px] text-cream hover:bg-white/[0.06]">
             <Plus className="size-3.5 text-violet" /> New board
           </button>

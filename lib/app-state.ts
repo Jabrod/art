@@ -25,6 +25,9 @@ interface AppState {
   chatsLoaded: boolean
   toasts: Toast[]
   sidebarOpen: boolean
+  /** bumped by "New chat" so the new-chat page starts over (its address may already be /c/<id>) */
+  chatNonce: number
+  newChat(): void
   loadMe(): Promise<void>
   loadModels(): Promise<void>
   loadChats(): Promise<void>
@@ -46,6 +49,8 @@ export const useApp = create<AppState>((set, get) => ({
   chatsLoaded: false,
   toasts: [],
   sidebarOpen: true,
+  chatNonce: 0,
+  newChat: () => set({ chatNonce: get().chatNonce + 1 }),
   loadMe: async () => {
     try {
       set({ me: await store.me(), meError: null })

@@ -31,7 +31,7 @@ function groupByDay(chats: { updatedAt: string }[]) {
 export function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
-  const { me, chats, chatsLoaded, sidebarOpen, setSidebar, removeChat, toast } = useApp()
+  const { me, chats, chatsLoaded, sidebarOpen, setSidebar, removeChat, toast, newChat } = useApp()
   const [q, setQ] = useState("")
   const [searching, setSearching] = useState(false)
 
@@ -54,7 +54,7 @@ export function Sidebar() {
         <button onClick={() => setSidebar(true)} className="icon-btn" aria-label="Open sidebar">
           <PanelLeftOpen className="size-4" />
         </button>
-        <Link href="/" className="icon-btn" aria-label="New chat">
+        <Link href="/" onClick={newChat} className="icon-btn" aria-label="New chat">
           <MessageSquarePlus className="size-4" />
         </Link>
         {NAV.map((n) => (
@@ -95,7 +95,7 @@ export function Sidebar() {
       )}
 
       <nav className="px-2" aria-label="Studio">
-        <Link href="/" className={`nav-item ${pathname === "/" ? "nav-active" : ""}`}>
+        <Link href="/" onClick={newChat} className={`nav-item ${pathname === "/" ? "nav-active" : ""}`}>
           <MessageSquarePlus className="size-[17px] text-cream/80" /> New chat
         </Link>
         {NAV.map((n) => (
@@ -153,8 +153,8 @@ export function Sidebar() {
             </div>
             <p className="mt-2 text-[11.5px] text-[var(--faint)]">credits left this month</p>
             {!credits.pro && (
-              <a href="https://jabrod.com/jbd/upgrade" target="_blank" rel="noreferrer" className="mt-3 flex h-9 items-center justify-center rounded-xl bg-cream text-[13px] font-medium text-ink hover:bg-white">
-                Get 1,000 credits with Pro
+              <a href="/pro" className="mt-3 flex h-9 items-center justify-center rounded-xl bg-cream text-[13px] font-medium text-ink hover:bg-white">
+                Get Art Pro: 1,000 credits a month
               </a>
             )}
           </div>

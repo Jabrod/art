@@ -149,7 +149,7 @@ export function ChatView({ chatId: initialId, boardId, compact, onAddPrompt, onC
 
   const promptCard = useCallback(
     (prompt: string) => (
-      <div className="not-prose my-3 overflow-hidden rounded-2xl border border-violet/30 bg-violet/[0.06]">
+      <div className="not-prose relative my-3 rounded-2xl border border-violet/30 bg-violet/[0.06]">
         <div className="flex items-center justify-between border-b border-violet/20 px-3 py-1.5">
           <span className="label !text-[9.5px] !text-violet">Prompt</span>
           <CopyButton text={prompt} />
