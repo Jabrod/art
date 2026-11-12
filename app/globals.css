@@ -1,0 +1,302 @@
+@import "tailwindcss";
+
+/*
+ * Jabrod Art Studio. The Art look: warm near-black, cream type, the film's paint colours
+ * (magenta, violet, blue, coral) used for node kinds and accents, spaced mono labels.
+ */
+@theme {
+  --color-ink: #0a090c;
+  --color-ink-2: #100e13;
+  --color-ink-3: #16141a;
+  --color-cream: #f3eee2;
+  --color-magenta: #ff3d8b;
+  --color-violet: #a24bff;
+  --color-blue: #3f7dff;
+  --color-coral: #ff8a3d;
+  --color-mint: #34d399;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+:root {
+  color-scheme: dark;
+  --line: rgb(243 238 226 / 0.08);
+  --line-strong: rgb(243 238 226 / 0.14);
+  --muted: rgb(243 238 226 / 0.58);
+  --faint: rgb(243 238 226 / 0.38);
+  --paint: linear-gradient(100deg, #ff3d8b, #a24bff 34%, #3f7dff 62%, #ff8a3d);
+}
+
+html,
+body {
+  height: 100%;
+  background: #0a090c;
+  color: #f3eee2;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+::selection {
+  background: rgb(162 75 255 / 0.45);
+}
+
+/* Headlines, as on jabrod.com (docs/design-system.md): Geist 500, −0.04em, tight leading. */
+.font-display {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+/* Spaced mono labels. */
+.label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.paint-text {
+  background-image: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.1) 0 1px, transparent 1px 4px), var(--paint);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.paint-bg {
+  background-image: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.1) 0 1px, transparent 1px 4px), var(--paint);
+}
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(243 238 226 / 0.14) transparent;
+}
+
+/* ── React Flow, in the Art palette ─────────────────────────────────────────── */
+.react-flow {
+  --xy-background-color: #0a090c;
+  --xy-edge-stroke: rgb(243 238 226 / 0.35);
+  --xy-edge-stroke-selected: #f3eee2;
+  --xy-edge-stroke-width: 1.5;
+  --xy-connectionline-stroke: #f3eee2;
+  --xy-handle-background-color: #0a090c;
+  --xy-handle-border-color: rgb(243 238 226 / 0.5);
+  --xy-selection-background-color: rgb(162 75 255 / 0.08);
+  --xy-selection-border: 1px dashed rgb(162 75 255 / 0.6);
+  --xy-minimap-background-color: #100e13;
+  --xy-minimap-mask-background-color: rgb(10 9 12 / 0.75);
+  --xy-minimap-node-background-color: rgb(243 238 226 / 0.18);
+  --xy-controls-button-background-color: #16141a;
+  --xy-controls-button-background-color-hover: #201d26;
+  --xy-controls-button-color: #f3eee2;
+  --xy-controls-button-border-color: rgb(243 238 226 / 0.08);
+  --xy-attribution-background-color: transparent;
+}
+
+.react-flow__handle {
+  width: 11px;
+  height: 11px;
+  border-width: 1.5px;
+  transition: transform 120ms ease, background-color 120ms ease;
+}
+.react-flow__handle:hover,
+.react-flow__handle.connectingto {
+  transform: scale(1.35);
+  background: #f3eee2;
+}
+.react-flow__edge.animated path {
+  stroke-dasharray: 6 6;
+}
+.react-flow__minimap {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.react-flow__controls {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: none;
+  border: 1px solid var(--line);
+}
+.react-flow__attribution {
+  display: none;
+}
+.react-flow__node {
+  /* the GPU keeps nodes on their own layers while the viewport moves */
+  will-change: transform;
+}
+.react-flow__resize-control.handle {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background: #f3eee2;
+  border: none;
+}
+
+/* Generating: a paint shimmer over the media frame. */
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+.generating {
+  background: linear-gradient(100deg, rgb(255 61 139 / 0.08), rgb(162 75 255 / 0.22), rgb(63 125 255 / 0.08), rgb(255 138 61 / 0.18), rgb(255 61 139 / 0.08));
+  background-size: 200% 100%;
+  animation: shimmer 2.4s linear infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 260ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .react-flow__edge.animated path {
+    stroke-dasharray: none;
+    animation: none;
+  }
+}
+
+/* Markdown in chat replies. */
+.prose-art {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgb(243 238 226 / 0.88);
+}
+.prose-art > * + * {
+  margin-top: 0.85em;
+}
+.prose-art h1,
+.prose-art h2,
+.prose-art h3 {
+  color: #f3eee2;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin-top: 1.4em;
+}
+.prose-art h1 {
+  font-size: 1.4em;
+}
+.prose-art h2 {
+  font-size: 1.22em;
+}
+.prose-art h3 {
+  font-size: 1.06em;
+}
+.prose-art ul,
+.prose-art ol {
+  padding-left: 1.3em;
+}
+.prose-art ul {
+  list-style: disc;
+}
+.prose-art ol {
+  list-style: decimal;
+}
+.prose-art li + li {
+  margin-top: 0.3em;
+}
+.prose-art a {
+  color: #f3eee2;
+  text-decoration: underline;
+  text-decoration-color: rgb(162 75 255 / 0.7);
+  text-underline-offset: 3px;
+}
+.prose-art strong {
+  color: #f3eee2;
+  font-weight: 600;
+}
+.prose-art code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: rgb(243 238 226 / 0.07);
+  padding: 0.12em 0.4em;
+  border-radius: 6px;
+}
+.prose-art pre code {
+  background: none;
+  padding: 0;
+  font-size: 13px;
+}
+.prose-art blockquote {
+  border-left: 2px solid rgb(162 75 255 / 0.6);
+  padding-left: 1em;
+  color: var(--muted);
+}
+.prose-art table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.prose-art th,
+.prose-art td {
+  border: 1px solid var(--line);
+  padding: 0.45em 0.7em;
+  text-align: left;
+}
+.prose-art th {
+  background: rgb(243 238 226 / 0.04);
+  color: #f3eee2;
+}
+.prose-art hr {
+  border-color: var(--line);
+}
+
+/* ── Shared controls ───────────────────────────────────────────────────────── */
+@layer components {
+  .btn-primary {
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded-full bg-cream px-5 text-sm font-medium text-ink transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-ghost {
+    @apply inline-flex h-9 items-center justify-center gap-2 rounded-full border border-[var(--line-strong)] px-4 text-[13px] text-cream/85 transition-colors hover:bg-white/[0.05] hover:text-cream disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .icon-btn {
+    @apply inline-grid size-8 place-items-center rounded-lg text-cream/60 transition-colors hover:bg-white/[0.06] hover:text-cream disabled:opacity-40;
+  }
+  .nav-item {
+    @apply flex h-10 items-center gap-3 rounded-xl px-3 text-[14px] text-cream/75 transition-colors hover:bg-white/[0.04] hover:text-cream;
+  }
+  .nav-active {
+    @apply bg-white/[0.07] text-cream;
+  }
+  .field {
+    @apply rounded-xl border border-[var(--line)] bg-white/[0.03] px-3 text-cream placeholder:text-[var(--faint)] outline-none transition-colors focus:border-[var(--line-strong)] focus:bg-white/[0.05];
+  }
+  .chip {
+    @apply inline-flex h-9 items-center gap-1.5 rounded-full border border-[var(--line)] bg-white/[0.02] px-3 text-[13px] text-cream/80 transition-colors hover:border-[var(--line-strong)] hover:text-cream;
+  }
+  .panel {
+    @apply rounded-2xl border border-[var(--line)] bg-ink-2;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid rgb(162 75 255 / 0.8);
+  outline-offset: 2px;
+}
