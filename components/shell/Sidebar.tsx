@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
-import { AudioLines, Clapperboard, Image as ImageIcon, Library, LayoutGrid, MessageSquarePlus, PanelLeftClose, PanelLeftOpen, Search, Trash2, Sparkles } from "lucide-react"
+import { AudioLines, Clapperboard, Image as ImageIcon, Library, LayoutGrid, LogOut, MessageSquarePlus, PanelLeftClose, PanelLeftOpen, Search, Trash2, Sparkles } from "lucide-react"
 import { pub, useApp } from "@/lib/app-state"
 import { store } from "@/lib/store"
 
@@ -164,6 +164,12 @@ export function Sidebar() {
             <p className="truncate text-[13px] text-cream">{me?.user?.name}</p>
             <p className="truncate text-[11px] text-[var(--faint)]">{me?.user?.email}</p>
           </div>
+          {store.mode === "remote" && (
+            // also signs out of jabrod.com (Jabrod sign-in is shared across products)
+            <a href="/auth/sign-out?next=/studio" className="icon-btn ml-auto shrink-0" aria-label="Sign out" title="Sign out">
+              <LogOut className="size-4" />
+            </a>
+          )}
         </div>
       </div>
     </aside>

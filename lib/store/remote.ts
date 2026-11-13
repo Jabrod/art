@@ -10,6 +10,9 @@ import { ArtError, type Board, type BoardStore, type BoardSummary, type Chat, ty
 
 const BASE = `${process.env.NEXT_PUBLIC_ART_API ?? ""}/api/art`
 
+/** sessionStorage flag: silent sign-in (prompt=none) was already tried in this tab session. */
+const SSO_TRIED = "jabrod-sso-tried"
+
 async function call<T>(path: string, init: RequestInit & { json?: unknown } = {}): Promise<T> {
   const { json, ...rest } = init
   let res: Response
@@ -38,10 +41,28 @@ export const remoteStore: BoardStore = {
   mode: "remote",
   me: async () => {
     try {
-      return await call<Me>("/me")
+      const me = await call<Me>("/me")
+      // signed in: a later expiry may try silent sign-in once more
+      try {
+        sessionStorage.removeItem(SSO_TRIED)
+      } catch {}
+      return me
     } catch (error) {
       if (error instanceof ArtError && error.status === 401) {
-        const next = typeof window === "undefined" ? "/studio" : window.location.pathname
+        const next = typeof window === "undefined" ? "/studio" : window.location.pathname + window.location.search
+        // Silent sign-in, once per browser session: jabrod.com answers with no screen, signed in
+        // if the person already is there, or quietly signed out (then the sign-in screen shows).
+        if (typeof window !== "undefined") {
+          let tried = true
+          try {
+            tried = sessionStorage.getItem(SSO_TRIED) === "1"
+            if (!tried) sessionStorage.setItem(SSO_TRIED, "1")
+          } catch {}
+          if (!tried) {
+            window.location.assign(`/auth/start?prompt=none&next=${encodeURIComponent(next)}`)
+            return new Promise<Me>(() => {}) // the page is leaving; keep the loading screen
+          }
+        }
         return { signedIn: false, signInUrl: `/sign-in?next=${encodeURIComponent(next)}` }
       }
       throw error
