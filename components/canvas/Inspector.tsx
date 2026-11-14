@@ -23,7 +23,7 @@ function Pick({ value, onChange, options }: { value: string; onChange: (v: strin
   return (
     <select value={value} onChange={(e) => onChange(e.target.value)} className="field h-9 w-full cursor-pointer text-[13px]">
       {options.map((o) => (
-        <option key={o.value} value={o.value} className="bg-ink-3">
+        <option key={o.value} value={o.value} className="bg-paper-2">
           {o.label}
         </option>
       ))}
@@ -61,15 +61,15 @@ export function Inspector({ node }: { node: FlowNode }) {
   if (kind === "audio" && sm) cost = Math.max(1, (sm.creditsPer1k * [...runPrompt].length) / 1000)
 
   return (
-    <div className="rise absolute bottom-3 right-3 top-[68px] z-10 flex w-[280px] flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-ink-2/95 shadow-[0_16px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl" aria-label={`${KIND_LABEL[kind]} settings`}>
+    <div className="rise absolute bottom-3 right-3 top-[68px] z-10 flex w-[280px] flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-paper-2/95 shadow-[var(--lift)]" aria-label={`${KIND_LABEL[kind]} settings`}>
       <div className="flex h-11 shrink-0 items-center gap-2 border-b border-[var(--line)] px-4">
         <span className="size-2 rounded-full" style={{ background: KIND_COLOR[kind] }} />
-        <span className="text-[13px] text-cream">{KIND_LABEL[kind]}</span>
+        <span className="text-[13px] text-ink">{KIND_LABEL[kind]}</span>
         <div className="ml-auto flex">
           <button className="icon-btn" onClick={() => useBoard.getState().duplicateSelected()} aria-label="Duplicate (Ctrl+D)" title="Duplicate (Ctrl+D)">
             <Copy className="size-3.5" />
           </button>
-          <button className="icon-btn hover:!text-magenta" onClick={() => useBoard.getState().removeNodes([node.id])} aria-label="Delete (Del)" title="Delete (Del)">
+          <button className="icon-btn hover:!text-ink/60" onClick={() => useBoard.getState().removeNodes([node.id])} aria-label="Delete (Del)" title="Delete (Del)">
             <Trash2 className="size-3.5" />
           </button>
         </div>
@@ -102,9 +102,9 @@ export function Inspector({ node }: { node: FlowNode }) {
               <Pick value={d.aspect && vm.aspects.includes(d.aspect) ? d.aspect : vm.aspects[0]} onChange={(v) => set({ aspect: v }, !d.asset)} options={vm.aspects.map((x) => ({ value: x, label: x }))} />
             </Row>
             {vm.audio && (
-              <label className="flex cursor-pointer items-center justify-between rounded-xl border border-[var(--line)] px-3 py-2 text-[13px] text-cream/85">
+              <label className="flex cursor-pointer items-center justify-between rounded-xl border border-[var(--line)] px-3 py-2 text-[13px] text-ink/85">
                 Generate sound
-                <input type="checkbox" checked={Boolean(d.audio)} onChange={(e) => set({ audio: e.target.checked })} className="size-4 accent-[#3f7dff]" />
+                <input type="checkbox" checked={Boolean(d.audio)} onChange={(e) => set({ audio: e.target.checked })} className="size-4 accent-[#f3eee2]" />
               </label>
             )}
           </>
@@ -125,7 +125,7 @@ export function Inspector({ node }: { node: FlowNode }) {
         {(kind === "image" || kind === "video" || kind === "audio") && (
           <>
             <Row label={kind === "audio" ? "Will speak" : "Will generate from"}>
-              <p className="max-h-40 overflow-y-auto whitespace-pre-wrap rounded-xl border border-[var(--line)] bg-black/20 p-3 text-[12.5px] leading-5 text-cream/80 scroll-thin">
+              <p className="max-h-40 overflow-y-auto whitespace-pre-wrap rounded-xl border border-[var(--line)] bg-paper-3 p-3 text-[12.5px] leading-5 text-ink/80 scroll-thin">
                 {runPrompt || <span className="text-[var(--faint)]">Nothing yet. Type in the node's prompt line, or connect a Prompt node.</span>}
               </p>
             </Row>

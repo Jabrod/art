@@ -7,7 +7,7 @@ import { ArrowLeft, AudioLines, Check, Clapperboard, CloudOff, FileDown, Image a
 import { FRAME, type NodeKind } from "@/lib/board"
 import { useApp } from "@/lib/app-state"
 import { addFiles, pollVideos } from "@/lib/generate"
-import { makeNode } from "@/lib/nodes"
+import { KIND_COLOR, makeNode } from "@/lib/nodes"
 import { useBoard } from "@/lib/useBoard"
 import { store } from "@/lib/store"
 import { ChatView } from "@/components/chat/ChatView"
@@ -15,12 +15,12 @@ import { Inspector } from "./Inspector"
 import { nodeTypes } from "./nodes"
 
 const PALETTE: { kind: NodeKind; label: string; key: string; icon: typeof ImageIcon; color: string }[] = [
-  { kind: "prompt", label: "Prompt", key: "P", icon: Sparkles, color: "text-violet" },
-  { kind: "image", label: "Image", key: "I", icon: ImageIcon, color: "text-magenta" },
-  { kind: "video", label: "Video", key: "V", icon: Clapperboard, color: "text-blue" },
-  { kind: "audio", label: "Audio", key: "A", icon: AudioLines, color: "text-coral" },
-  { kind: "note", label: "Note", key: "N", icon: NotebookPen, color: "text-cream/80" },
-  { kind: "export", label: "Export", key: "E", icon: FileDown, color: "text-mint" },
+  { kind: "prompt", label: "Prompt", key: "P", icon: Sparkles, color: "text-ink/60" },
+  { kind: "image", label: "Image", key: "I", icon: ImageIcon, color: "text-ink/60" },
+  { kind: "video", label: "Video", key: "V", icon: Clapperboard, color: "text-ink/60" },
+  { kind: "audio", label: "Audio", key: "A", icon: AudioLines, color: "text-ink/60" },
+  { kind: "note", label: "Note", key: "N", icon: NotebookPen, color: "text-ink/80" },
+  { kind: "export", label: "Export", key: "E", icon: FileDown, color: "text-ink/60" },
 ]
 
 const isTyping = (t: EventTarget | null) => t instanceof HTMLElement && (t.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(t.tagName))
@@ -164,7 +164,7 @@ function Board({ boardId }: { boardId: string }) {
     return (
       <div className="grid h-full place-items-center px-6 text-center">
         <div>
-          <p className="text-[15px] text-cream/85">{s.error}</p>
+          <p className="text-[15px] text-ink/85">{s.error}</p>
           <Link href="/boards" className="btn-ghost mt-5">
             Back to boards
           </Link>
@@ -216,27 +216,27 @@ function Board({ boardId }: { boardId: string }) {
           proOptions={{ hideAttribution: true }}
           fitView={s.nodes.length > 0 && s.viewport.x === 0 && s.viewport.y === 0 && s.viewport.zoom === 1}
           fitViewOptions={{ padding: 0.25, maxZoom: 1 }}
-          className={dragOver ? "outline outline-2 -outline-offset-8 outline-violet/60" : ""}
+          className={dragOver ? "outline outline-2 -outline-offset-8 outline-white/30" : ""}
         >
-          <Background variant={BackgroundVariant.Dots} gap={22} size={1.2} color="rgba(243,238,226,0.13)" />
-          <MiniMap pannable zoomable nodeStrokeWidth={0} nodeBorderRadius={6} nodeColor={(n) => ({ prompt: "#a24bff", image: "#ff3d8b", video: "#3f7dff", audio: "#ff8a3d", note: "#6b6670", export: "#34d399" })[n.type as NodeKind] ?? "#555"} position="bottom-right" style={{ width: 168, height: 112 }} />
+          <Background variant={BackgroundVariant.Lines} gap={48} lineWidth={1} color="rgba(255,255,255,0.035)" />
+          <MiniMap pannable zoomable nodeStrokeWidth={0} nodeBorderRadius={6} nodeColor={(n) => KIND_COLOR[n.type as NodeKind] ?? "#f3eee2"} position="bottom-right" style={{ width: 168, height: 112 }} />
           <Controls position="bottom-left" showInteractive={false} fitViewOptions={{ padding: 0.25, duration: reduceMotion ? 0 : 300 }} style={{ marginLeft: 72 }} />
         </ReactFlow>
 
         <TopBar onToggleChat={() => setChatOpen((o) => !o)} chatOpen={chatOpen} onUpload={() => fileRef.current?.click()} />
 
         {/* Palette */}
-        <div className="absolute left-3 top-1/2 z-10 flex -translate-y-1/2 flex-col gap-1 rounded-2xl border border-[var(--line)] bg-ink-2/90 p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl" role="toolbar" aria-label="Add to board">
+        <div className="absolute left-3 top-1/2 z-10 flex -translate-y-1/2 flex-col gap-1 rounded-2xl border border-[var(--line)] bg-paper-2/90 p-1.5 shadow-[var(--lift)]" role="toolbar" aria-label="Add to board">
           {PALETTE.map((p) => (
-            <button key={p.kind} onClick={() => add(p.kind)} className="group relative grid size-10 place-items-center rounded-xl text-cream/70 hover:bg-white/[0.07] hover:text-cream" aria-label={`Add ${p.label} (${p.key})`}>
+            <button key={p.kind} onClick={() => add(p.kind)} className="group relative grid size-10 place-items-center rounded-xl text-ink/70 hover:bg-ink/[0.07] hover:text-ink" aria-label={`Add ${p.label} (${p.key})`}>
               <p.icon className={`size-[18px] ${p.color}`} />
-              <span className="pointer-events-none absolute left-full ml-2 whitespace-nowrap rounded-lg bg-ink-3 px-2 py-1 text-[11.5px] text-cream opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+              <span className="pointer-events-none absolute left-full ml-2 whitespace-nowrap rounded-lg bg-paper-2 px-2 py-1 text-[11.5px] text-ink opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
                 {p.label} <span className="font-mono text-[var(--faint)]">{p.key}</span>
               </span>
             </button>
           ))}
           <div className="mx-2 my-1 h-px bg-[var(--line)]" />
-          <button onClick={() => fileRef.current?.click()} className="grid size-10 place-items-center rounded-xl text-cream/70 hover:bg-white/[0.07] hover:text-cream" aria-label="Upload files" title="Upload (or drop files on the board)">
+          <button onClick={() => fileRef.current?.click()} className="grid size-10 place-items-center rounded-xl text-ink/70 hover:bg-ink/[0.07] hover:text-ink" aria-label="Upload files" title="Upload (or drop files on the board)">
             <Upload className="size-[18px]" />
           </button>
         </div>
@@ -257,7 +257,7 @@ function Board({ boardId }: { boardId: string }) {
           <div className="pointer-events-none absolute inset-0 grid place-items-center">
             <div className="rise text-center">
               <p className="label">Empty board</p>
-              <p className="font-display mt-3 text-3xl text-cream/90">Start with an idea.</p>
+              <p className="font-display mt-3 text-3xl text-ink/90">Start with an idea.</p>
               <p className="mt-3 text-[14px] leading-6 text-[var(--muted)]">
                 Add a Prompt (P) and an Image (I), connect them, and press Generate.
                 <br />
@@ -284,7 +284,7 @@ function Board({ boardId }: { boardId: string }) {
         )}
 
         {menu && (
-          <div className="rise fixed z-50 w-48 rounded-2xl border border-[var(--line-strong)] bg-ink-3 p-1.5 shadow-[0_16px_50px_rgba(0,0,0,0.6)]" style={{ left: menu.x, top: menu.y }} role="menu">
+          <div className="rise fixed z-50 w-48 rounded-2xl border border-[var(--line-strong)] bg-paper-2 p-1.5 shadow-[var(--lift)]" style={{ left: menu.x, top: menu.y }} role="menu">
             {PALETTE.map((p) => (
               <button
                 key={p.kind}
@@ -292,7 +292,7 @@ function Board({ boardId }: { boardId: string }) {
                   add(p.kind, { x: menu.flow.x + FRAME[p.kind].width / 2, y: menu.flow.y + FRAME[p.kind].height / 2 })
                   setMenu(null)
                 }}
-                className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[13px] text-cream/85 hover:bg-white/[0.06]"
+                className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[13px] text-ink/85 hover:bg-ink/[0.06]"
               >
                 <p.icon className={`size-4 ${p.color}`} /> {p.label}
                 <span className="ml-auto font-mono text-[11px] text-[var(--faint)]">{p.key}</span>
@@ -305,10 +305,10 @@ function Board({ boardId }: { boardId: string }) {
       </div>
 
       {chatOpen && (
-        <aside className="flex w-[380px] shrink-0 flex-col border-l border-[var(--line)] bg-ink-2">
+        <aside className="flex w-[380px] shrink-0 flex-col border-l border-[var(--line)] bg-paper-2">
           <div className="flex h-12 shrink-0 items-center justify-between border-b border-[var(--line)] px-4">
-            <span className="flex items-center gap-2 text-[13px] text-cream/85">
-              <MessageSquare className="size-4 text-violet" /> Assistant
+            <span className="flex items-center gap-2 text-[13px] text-ink/85">
+              <MessageSquare className="size-4 text-ink/60" /> Assistant
             </span>
             <div className="flex items-center">
               {chatId && (
@@ -341,7 +341,7 @@ function TopBar({ onToggleChat, chatOpen, onUpload }: { onToggleChat: () => void
 
   return (
     <div className="pointer-events-none absolute inset-x-3 top-3 z-10 flex items-start justify-between gap-3">
-      <div className="pointer-events-auto flex h-11 items-center gap-1 rounded-2xl border border-[var(--line)] bg-ink-2/90 pl-1.5 pr-3 shadow-[0_12px_40px_rgba(0,0,0,0.4)] backdrop-blur-xl">
+      <div className="pointer-events-auto flex h-11 items-center gap-1 rounded-2xl border border-[var(--line)] bg-paper-2/90 pl-1.5 pr-3 shadow-[var(--lift)]">
         <Link href="/boards" className="icon-btn" aria-label="All boards">
           <ArrowLeft className="size-4" />
         </Link>
@@ -371,7 +371,7 @@ function TopBar({ onToggleChat, chatOpen, onUpload }: { onToggleChat: () => void
               setDraft(title)
               setEditing(true)
             }}
-            className="max-w-[260px] truncate rounded-lg px-2 py-1 text-[14px] font-medium text-cream hover:bg-white/[0.05]"
+            className="max-w-[260px] truncate rounded-lg px-2 py-1 text-[14px] font-medium text-ink hover:bg-ink/[0.05]"
             title="Rename"
           >
             {title}
@@ -379,8 +379,8 @@ function TopBar({ onToggleChat, chatOpen, onUpload }: { onToggleChat: () => void
         )}
         <span className="ml-1 flex items-center gap-1 font-mono text-[10.5px] text-[var(--faint)]" aria-live="polite">
           {save === "saving" && <Loader2 className="size-3 animate-spin" />}
-          {save === "saved" && <Check className="size-3 text-mint" />}
-          {save === "error" && <CloudOff className="size-3 text-magenta" />}
+          {save === "saved" && <Check className="size-3 text-ink/60" />}
+          {save === "error" && <CloudOff className="size-3 text-ink/60" />}
           {save === "saved" ? "Saved" : save === "saving" ? "Saving" : save === "dirty" ? "Edited" : "Not saved — retrying"}
         </span>
         <div className="mx-1 h-5 w-px bg-[var(--line)]" />
@@ -391,18 +391,18 @@ function TopBar({ onToggleChat, chatOpen, onUpload }: { onToggleChat: () => void
           <Redo2 className="size-4" />
         </button>
       </div>
-      <div className="pointer-events-auto flex h-11 items-center gap-2 rounded-2xl border border-[var(--line)] bg-ink-2/90 px-2 shadow-[0_12px_40px_rgba(0,0,0,0.4)] backdrop-blur-xl">
+      <div className="pointer-events-auto flex h-11 items-center gap-2 rounded-2xl border border-[var(--line)] bg-paper-2/90 px-2 shadow-[var(--lift)]">
         {credits && store.mode === "remote" && (
           <span className="px-2 font-mono text-[11px] text-[var(--muted)]" title="AI credits left this month">
-            <Sparkles className="mr-1 inline size-3 text-violet" />
+            <Sparkles className="mr-1 inline size-3 text-ink/60" />
             {credits.left} credits
           </span>
         )}
         <button className="btn-ghost !h-8" onClick={onUpload}>
           <Upload className="size-3.5" /> Upload
         </button>
-        <button className={`btn-ghost !h-8 ${chatOpen ? "!border-violet/50 bg-violet/10" : ""}`} onClick={onToggleChat} aria-pressed={chatOpen}>
-          <MessageSquare className="size-3.5 text-violet" /> Assistant
+        <button className={`btn-ghost !h-8 ${chatOpen ? "!border-[var(--line-strong)] bg-ink/[0.06]" : ""}`} onClick={onToggleChat} aria-pressed={chatOpen}>
+          <MessageSquare className="size-3.5 text-ink/60" /> Assistant
         </button>
       </div>
     </div>

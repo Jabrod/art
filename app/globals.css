@@ -1,36 +1,45 @@
 @import "tailwindcss";
 
 /*
- * Jabrod Art Studio. The Art look: warm near-black, cream type, the film's paint colours
- * (magenta, violet, blue, coral) used for node kinds and accents, spaced mono labels.
+ * Jabrod Art Studio — the Jabrod scheme (jbd_home docs/design-system.md): warm near-black, cream for
+ * headings and the lowercase "jabrod", white-alpha greys for text, borders and surfaces. No CSS
+ * gradients and no invented accents. Art's colour appears only where Art's identity shows, and only
+ * as the paint of the "Introducing Jabrod ART" film: the painted assets themselves, or the --brush-*
+ * tokens below, sampled from those strokes (public/brand/art-painted.png, art-underline.png).
+ *
+ * Token names are semantic: "paper" is the surface, "ink" is the type.
  */
 @theme {
-  --color-ink: #0a090c;
-  --color-ink-2: #100e13;
-  --color-ink-3: #16141a;
-  --color-cream: #f3eee2;
-  --color-magenta: #ff3d8b;
-  --color-violet: #a24bff;
-  --color-blue: #3f7dff;
-  --color-coral: #ff8a3d;
-  --color-mint: #34d399;
+  --color-paper: #0a090c; /* warm near-black: every screen */
+  --color-paper-2: #121015; /* raised: cards, panels, the sidebar */
+  --color-paper-3: #18161b; /* wells and pressed states */
+  --color-ink: #f3eee2; /* cream: headings, type, primary buttons */
+  /* Brush paint, sampled from the ART film's strokes (median pixel of each hue cluster). */
+  --color-magenta: #aa256c;
+  --color-rose: #d34265;
+  --color-violet: #54207d;
+  --color-blue: #265c95;
+  --color-coral: #e5675b;
+  /* success shows as cream (no invented green) */
+  --color-mint: #f3eee2;
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 :root {
   color-scheme: dark;
-  --line: rgb(243 238 226 / 0.08);
-  --line-strong: rgb(243 238 226 / 0.14);
-  --muted: rgb(243 238 226 / 0.58);
-  --faint: rgb(243 238 226 / 0.38);
-  --paint: linear-gradient(100deg, #ff3d8b, #a24bff 34%, #3f7dff 62%, #ff8a3d);
+  --line: rgb(255 255 255 / 0.08);
+  --line-strong: rgb(255 255 255 / 0.14);
+  --muted: rgb(255 255 255 / 0.55);
+  --faint: rgb(255 255 255 / 0.4);
+  --lift: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 12px 30px -12px rgb(0 0 0 / 0.6);
+  --lift-high: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 24px 60px -20px rgb(0 0 0 / 0.75);
 }
 
 html,
 body {
   height: 100%;
-  background: #0a090c;
+  background-color: #0a090c;
   color: #f3eee2;
 }
 
@@ -41,10 +50,10 @@ body {
 }
 
 ::selection {
-  background: rgb(162 75 255 / 0.45);
+  background: rgb(170 37 108 / 0.45); /* brush magenta */
 }
 
-/* Headlines, as on jabrod.com (docs/design-system.md): Geist 500, −0.04em, tight leading. */
+/* Headlines (docs/design-system.md): Geist 500, −0.04em, tight leading. */
 .font-display {
   font-family: var(--font-sans);
   font-weight: 500;
@@ -52,49 +61,70 @@ body {
   line-height: 1;
 }
 
-/* Spaced mono labels. */
+/* Small labels: sentence case, medium weight, quiet. */
 .label {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
   color: var(--faint);
 }
 
-.paint-text {
-  background-image: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.1) 0 1px, transparent 1px 4px), var(--paint);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* The Jabrod mark is drawn light, as it should be on the dark scheme. */
+.mark-ink {
+  opacity: 0.95;
 }
 
-.paint-bg {
-  background-image: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.1) 0 1px, transparent 1px 4px), var(--paint);
+/* A word underlined with the film's own painted brush stroke (public/brand/art-underline.png). */
+.brush-underline {
+  position: relative;
+  display: inline-block;
+}
+.brush-underline::after {
+  content: "";
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  bottom: -0.16em;
+  height: 0.2em;
+  background: url("/studio/brand/art-underline.png") center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+
+/* A hand-painted dab (the kind marker on nodes, the active place in the sidebar). */
+.dab {
+  display: inline-block;
+  width: 14px;
+  height: 8px;
+  border-radius: 60% 40% 55% 45% / 70% 50% 50% 30%;
+  transform: rotate(-8deg);
+  background: currentColor;
+  box-shadow: inset -2px -1px 0 rgb(255 255 255 / 0.28), inset 1px 1px 0 rgb(0 0 0 / 0.08);
 }
 
 .scroll-thin {
   scrollbar-width: thin;
-  scrollbar-color: rgb(243 238 226 / 0.14) transparent;
+  scrollbar-color: rgb(255 255 255 / 0.14) transparent;
 }
 
-/* ── React Flow, in the Art palette ─────────────────────────────────────────── */
+/* ── React Flow in the Jabrod scheme ─────────────────────────────────────── */
 .react-flow {
-  --xy-background-color: #0a090c;
-  --xy-edge-stroke: rgb(243 238 226 / 0.35);
+  --xy-background-color: transparent;
+  --xy-edge-stroke: rgb(255 255 255 / 0.32);
   --xy-edge-stroke-selected: #f3eee2;
   --xy-edge-stroke-width: 1.5;
   --xy-connectionline-stroke: #f3eee2;
   --xy-handle-background-color: #0a090c;
-  --xy-handle-border-color: rgb(243 238 226 / 0.5);
-  --xy-selection-background-color: rgb(162 75 255 / 0.08);
-  --xy-selection-border: 1px dashed rgb(162 75 255 / 0.6);
-  --xy-minimap-background-color: #100e13;
-  --xy-minimap-mask-background-color: rgb(10 9 12 / 0.75);
-  --xy-minimap-node-background-color: rgb(243 238 226 / 0.18);
-  --xy-controls-button-background-color: #16141a;
-  --xy-controls-button-background-color-hover: #201d26;
+  --xy-handle-border-color: rgb(255 255 255 / 0.5);
+  --xy-selection-background-color: rgb(255 255 255 / 0.04);
+  --xy-selection-border: 1px dashed rgb(255 255 255 / 0.4);
+  --xy-minimap-background-color: #121015;
+  --xy-minimap-mask-background-color: rgb(10 9 12 / 0.7);
+  --xy-minimap-node-background-color: rgb(255 255 255 / 0.2);
+  --xy-controls-button-background-color: #121015;
+  --xy-controls-button-background-color-hover: #18161b;
   --xy-controls-button-color: #f3eee2;
-  --xy-controls-button-border-color: rgb(243 238 226 / 0.08);
+  --xy-controls-button-border-color: rgb(255 255 255 / 0.08);
   --xy-attribution-background-color: transparent;
 }
 
@@ -116,18 +146,19 @@ body {
   border: 1px solid var(--line);
   border-radius: 14px;
   overflow: hidden;
+  box-shadow: var(--lift);
 }
 .react-flow__controls {
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: none;
+  box-shadow: var(--lift);
   border: 1px solid var(--line);
 }
 .react-flow__attribution {
   display: none;
 }
 .react-flow__node {
-  /* the GPU keeps nodes on their own layers while the viewport moves */
+  /* each node keeps its own layer while the board moves */
   will-change: transform;
 }
 .react-flow__resize-control.handle {
@@ -138,19 +169,18 @@ body {
   border: none;
 }
 
-/* Generating: a paint shimmer over the media frame. */
-@keyframes shimmer {
-  from {
-    background-position: -200% 0;
+/* Generating: a quiet pulse on the frame (no colour gradient). */
+@keyframes working {
+  0%,
+  100% {
+    background-color: rgb(255 255 255 / 0.025);
   }
-  to {
-    background-position: 200% 0;
+  50% {
+    background-color: rgb(255 255 255 / 0.07);
   }
 }
 .generating {
-  background: linear-gradient(100deg, rgb(255 61 139 / 0.08), rgb(162 75 255 / 0.22), rgb(63 125 255 / 0.08), rgb(255 138 61 / 0.18), rgb(255 61 139 / 0.08));
-  background-size: 200% 100%;
-  animation: shimmer 2.4s linear infinite;
+  animation: working 1.8s ease-in-out infinite;
 }
 
 @keyframes rise {
@@ -164,7 +194,7 @@ body {
   }
 }
 .rise {
-  animation: rise 260ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: rise 240ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -184,8 +214,8 @@ body {
 
 /* Markdown in chat replies. */
 .prose-art {
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: 15.5px;
+  line-height: 1.68;
   color: rgb(243 238 226 / 0.88);
 }
 .prose-art > * + * {
@@ -225,7 +255,7 @@ body {
 .prose-art a {
   color: #f3eee2;
   text-decoration: underline;
-  text-decoration-color: rgb(162 75 255 / 0.7);
+  text-decoration-color: rgb(170 37 108 / 0.8);
   text-underline-offset: 3px;
 }
 .prose-art strong {
@@ -235,7 +265,7 @@ body {
 .prose-art code {
   font-family: var(--font-mono);
   font-size: 0.86em;
-  background: rgb(243 238 226 / 0.07);
+  background: rgb(255 255 255 / 0.07);
   padding: 0.12em 0.4em;
   border-radius: 6px;
 }
@@ -245,7 +275,7 @@ body {
   font-size: 13px;
 }
 .prose-art blockquote {
-  border-left: 2px solid rgb(162 75 255 / 0.6);
+  border-left: 2px solid rgb(255 255 255 / 0.2);
   padding-left: 1em;
   color: var(--muted);
 }
@@ -261,7 +291,7 @@ body {
   text-align: left;
 }
 .prose-art th {
-  background: rgb(243 238 226 / 0.04);
+  background: rgb(255 255 255 / 0.03);
   color: #f3eee2;
 }
 .prose-art hr {
@@ -271,34 +301,34 @@ body {
 /* ── Shared controls ───────────────────────────────────────────────────────── */
 @layer components {
   .btn-primary {
-    @apply inline-flex h-10 items-center justify-center gap-2 rounded-full bg-cream px-5 text-sm font-medium text-ink transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-40;
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded-full bg-ink px-5 text-sm font-medium text-paper transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-40;
   }
   .btn-ghost {
-    @apply inline-flex h-9 items-center justify-center gap-2 rounded-full border border-[var(--line-strong)] px-4 text-[13px] text-cream/85 transition-colors hover:bg-white/[0.05] hover:text-cream disabled:cursor-not-allowed disabled:opacity-40;
+    @apply inline-flex h-9 items-center justify-center gap-2 rounded-full border border-[var(--line-strong)] bg-paper-2 px-4 text-[13px] text-ink/85 transition-colors hover:border-ink/30 hover:text-ink disabled:cursor-not-allowed disabled:opacity-40;
   }
   .icon-btn {
-    @apply inline-grid size-8 place-items-center rounded-lg text-cream/60 transition-colors hover:bg-white/[0.06] hover:text-cream disabled:opacity-40;
+    @apply inline-grid size-8 place-items-center rounded-lg text-ink/55 transition-colors hover:bg-ink/[0.06] hover:text-ink disabled:opacity-40;
   }
   .nav-item {
-    @apply flex h-10 items-center gap-3 rounded-xl px-3 text-[14px] text-cream/75 transition-colors hover:bg-white/[0.04] hover:text-cream;
+    @apply relative flex h-10 items-center gap-3 rounded-xl px-3 text-[14px] text-ink/70 transition-colors hover:bg-ink/[0.04] hover:text-ink;
   }
   .nav-active {
-    @apply bg-white/[0.07] text-cream;
+    @apply bg-paper-2 text-ink shadow-[var(--lift)];
   }
   .field {
-    @apply rounded-xl border border-[var(--line)] bg-white/[0.03] px-3 text-cream placeholder:text-[var(--faint)] outline-none transition-colors focus:border-[var(--line-strong)] focus:bg-white/[0.05];
+    @apply rounded-xl border border-[var(--line)] bg-paper-2 px-3 text-ink placeholder:text-[var(--faint)] outline-none transition-colors focus:border-white/25;
   }
   .chip {
-    @apply inline-flex h-9 items-center gap-1.5 rounded-full border border-[var(--line)] bg-white/[0.02] px-3 text-[13px] text-cream/80 transition-colors hover:border-[var(--line-strong)] hover:text-cream;
+    @apply inline-flex h-9 items-center gap-1.5 rounded-full border border-[var(--line)] bg-paper-2 px-3 text-[13px] text-ink/80 transition-colors hover:border-ink/30 hover:text-ink;
   }
   .panel {
-    @apply rounded-2xl border border-[var(--line)] bg-ink-2;
+    @apply rounded-2xl border border-[var(--line)] bg-paper-2;
   }
 }
 
 /*
- * Focus: text fields show focus through their own border (the composer and fields brighten), so
- * they never get an outline. Buttons and links reached by keyboard get a faint cream ring.
+ * Focus: text fields show focus through their own border, so they never get an outline.
+ * Buttons and links reached by keyboard get an ink ring.
  */
 input,
 textarea,
@@ -313,6 +343,6 @@ select:focus-visible,
   outline: none;
 }
 :focus-visible {
-  outline: 1.5px solid rgb(243 238 226 / 0.35);
+  outline: 1.5px solid rgb(243 238 226 / 0.45);
   outline-offset: 2px;
 }

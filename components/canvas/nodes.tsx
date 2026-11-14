@@ -30,22 +30,23 @@ function Frame({ id, kind, selected, children, right, inputs = true, outputs = t
   const status = useBoard((s) => s.nodes.find((n) => n.id === id)?.data.status)
   return (
     <div
-      className={`relative flex h-full w-full flex-col overflow-hidden rounded-[18px] border bg-ink-2/95 transition-[border-color,box-shadow] duration-150 ${
-        selected ? "border-cream/40 shadow-[0_0_0_1px_rgba(243,238,226,0.25),0_18px_50px_rgba(0,0,0,0.55)]" : "border-[var(--line-strong)] shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
+      className={`relative flex h-full w-full flex-col overflow-hidden rounded-xl border bg-paper-2 transition-[border-color,box-shadow] duration-150 ${
+        selected ? "border-ink shadow-[var(--lift-high)]" : "border-[var(--line)] shadow-[var(--lift)]"
       }`}
     >
       <NodeResizer isVisible={selected} minWidth={200} minHeight={minH} keepAspectRatio={kind === "image" || kind === "video"} lineClassName="!border-transparent" />
-      <div className="absolute inset-x-0 top-0 h-[2px]" style={{ background: color, opacity: 0.85 }} />
-      <div className="flex shrink-0 items-center gap-2 px-3" style={{ height: HEADER }}>
-        <Icon className="size-3.5" style={{ color }} />
-        <span className="label !text-[9.5px] !text-cream/60">{KIND_LABEL[kind]}</span>
-        {status === "working" && <Loader2 className="size-3 animate-spin text-cream/50" />}
-        {status === "error" && <AlertTriangle className="size-3 text-magenta" />}
+      <div className="flex shrink-0 items-center gap-2 border-b border-[var(--line)] px-3" style={{ height: HEADER }}>
+        {/* the kind, marked with a dab of its paint */}
+        <span className="dab" style={{ color }} aria-hidden />
+        <span className="text-[12.5px] font-medium text-ink/80">{KIND_LABEL[kind]}</span>
+        <Icon className="size-3.5 text-ink/30" aria-hidden />
+        {status === "working" && <Loader2 className="size-3 animate-spin text-ink/50" />}
+        {status === "error" && <AlertTriangle className="size-3 text-ink/60" />}
         <div className="ml-auto flex items-center gap-1">{right}</div>
       </div>
       {children}
       {inputs && <Handle type="target" position={Position.Left} style={{ top: "50%" }} />}
-      {outputs && <Handle type="source" position={Position.Right} style={{ top: "50%", borderColor: color }} />}
+      {outputs && <Handle type="source" position={Position.Right} style={{ top: "50%" }} />}
     </div>
   )
 }
@@ -60,7 +61,7 @@ function TextArea({ id, field, placeholder, className = "" }: { id: string; fiel
       onFocus={checkpoint}
       onChange={(e) => update(id, { [field]: e.target.value })}
       placeholder={placeholder}
-      className={`nodrag nowheel w-full flex-1 resize-none bg-transparent px-3 pb-3 text-[13.5px] leading-[1.55] text-cream/90 outline-none placeholder:text-[var(--faint)] scroll-thin ${className}`}
+      className={`nodrag nowheel w-full flex-1 resize-none bg-transparent px-3 pb-3 text-[13.5px] leading-[1.55] text-ink/90 outline-none placeholder:text-[var(--faint)] scroll-thin ${className}`}
       spellCheck
     />
   )
@@ -77,7 +78,7 @@ export const PromptNode = memo(function PromptNode({ id, selected }: NodeProps<F
 export const NoteNode = memo(function NoteNode({ id, selected }: NodeProps<FlowNode>) {
   return (
     <Frame id={id} kind="note" selected={selected} inputs={false}>
-      <TextArea id={id} field="text" placeholder="A note for this board…" className="font-mono !text-[12.5px] text-cream/75" />
+      <TextArea id={id} field="text" placeholder="A note for this board…" className="font-mono !text-[12.5px] text-ink/75" />
     </Frame>
   )
 })
@@ -92,7 +93,7 @@ function GenFooter({ id, kind }: { id: string; kind: "image" | "video" | "audio"
       <button
         onClick={() => runNode(id)}
         disabled={working}
-        className="nodrag inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full bg-cream pl-3 pr-2.5 text-[12px] font-medium text-ink transition-opacity hover:bg-white disabled:opacity-40"
+        className="nodrag inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full bg-ink pl-3 pr-2.5 text-[12px] font-medium text-paper transition-opacity hover:bg-white disabled:opacity-40"
         title="Generate (uses the prompts wired into this node, then its own)"
       >
         {working ? <Loader2 className="size-3.5 animate-spin" /> : kind === "audio" ? "Speak" : "Generate"}
@@ -113,7 +114,7 @@ function InlinePrompt({ id, field, placeholder }: { id: string; field: "text" | 
       onChange={(e) => update(id, { [field]: e.target.value })}
       onKeyDown={(e) => e.key === "Enter" && runNode(id)}
       placeholder={placeholder}
-      className="nodrag min-w-0 flex-1 rounded-lg bg-transparent px-1.5 text-[12.5px] text-cream/90 outline-none placeholder:text-[var(--faint)] focus:bg-white/[0.04]"
+      className="nodrag min-w-0 flex-1 rounded-lg bg-transparent px-1.5 text-[12.5px] text-ink/90 outline-none placeholder:text-[var(--faint)] focus:bg-ink/[0.04]"
     />
   )
 }
@@ -125,22 +126,22 @@ function MediaState({ id, kind }: { id: string; kind: "image" | "video" | "audio
   const fileRef = useRef<HTMLInputElement>(null)
   if (data?.status === "working") {
     return (
-      <div className="generating flex h-full w-full flex-col items-center justify-center gap-2 text-[12px] text-cream/75">
+      <div className="generating flex h-full w-full flex-col items-center justify-center gap-2 text-[12px] text-ink/75">
         <Loader2 className="size-4 animate-spin" />
         {progress != null ? `Uploading ${Math.round(progress * 100)}%` : kind === "video" ? "Making the clip…" : kind === "audio" ? "Recording the voice…" : "Painting…"}
       </div>
     )
   }
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-[radial-gradient(circle_at_50%_40%,rgba(243,238,226,0.04),transparent_70%)] p-4 text-center">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-paper-3/60 p-4 text-center">
       {data?.status === "error" ? (
-        <p className="line-clamp-4 text-[12px] leading-5 text-magenta/90">{data.error}</p>
+        <p className="line-clamp-4 text-[12px] leading-5 text-ink/60">{data.error}</p>
       ) : (
         <p className="text-[12px] leading-5 text-[var(--faint)]">Generate from a prompt, or bring your own {kind}.</p>
       )}
       <div className="flex gap-2">
         <button onClick={() => runNode(id)} className="nodrag btn-ghost !h-8 !px-3 !text-[12px]">
-          <Sparkles className="size-3.5 text-violet" /> Generate
+          <Sparkles className="size-3.5 text-ink/60" /> Generate
         </button>
         <button onClick={() => fileRef.current?.click()} className="nodrag btn-ghost !h-8 !px-3 !text-[12px]">
           <Upload className="size-3.5" /> Upload
@@ -201,7 +202,7 @@ export const AudioNode = memo(function AudioNode({ id, data, selected }: NodePro
       <div className="flex min-h-0 flex-1 flex-col justify-center gap-2 px-3">
         {data.asset && url && data.status !== "working" ? (
           <>
-            <p className="truncate text-[12px] text-cream/70">
+            <p className="truncate text-[12px] text-ink/70">
               {data.label} <span className="font-mono text-[var(--faint)]">{fmtDuration(data.asset.durationMs)}</span>
             </p>
             <audio src={url} controls preload="metadata" className="nodrag h-9 w-full" />
@@ -229,8 +230,8 @@ export const ExportNode = memo(function ExportNode({ id, selected }: NodeProps<F
           <p className="text-[12px] leading-5 text-[var(--faint)]">Connect images, clips and audio here to take them out of the studio.</p>
         ) : (
           media.map((m) => (
-            <button key={m.id} onClick={() => downloadAsset(m)} className="nodrag flex w-full items-center gap-2 rounded-lg px-1 py-1.5 text-left text-[12px] text-cream/80 hover:bg-white/[0.05]">
-              {m.kind === "image" ? <ImageIcon className="size-3.5 text-magenta" /> : m.kind === "video" ? <Clapperboard className="size-3.5 text-blue" /> : <AudioLines className="size-3.5 text-coral" />}
+            <button key={m.id} onClick={() => downloadAsset(m)} className="nodrag flex w-full items-center gap-2 rounded-lg px-1 py-1.5 text-left text-[12px] text-ink/80 hover:bg-ink/[0.05]">
+              {m.kind === "image" ? <ImageIcon className="size-3.5 text-ink/60" /> : m.kind === "video" ? <Clapperboard className="size-3.5 text-ink/60" /> : <AudioLines className="size-3.5 text-ink/60" />}
               <span className="min-w-0 flex-1 truncate">{m.name ?? m.kind}</span>
               <Download className="size-3 text-[var(--faint)]" />
             </button>
@@ -241,7 +242,7 @@ export const ExportNode = memo(function ExportNode({ id, selected }: NodeProps<F
         <button disabled={media.length === 0} onClick={() => media.forEach((m, i) => setTimeout(() => downloadAsset(m), i * 400))} className="nodrag btn-ghost !h-8 w-full !text-[12px]">
           <Download className="size-3.5" /> Download all ({media.length})
         </button>
-        <a href={hasDevice ? "https://art.jabrod.com/jbd" : "https://art.jabrod.com/jbd"} target="_blank" rel="noreferrer" className="nodrag inline-flex h-8 items-center justify-center gap-1.5 rounded-full bg-cream text-[12px] font-medium text-ink hover:bg-white" title={hasDevice ? "Download the files, then add them to your JBD project" : "JBD is Jabrod's free video editor for Windows"}>
+        <a href={hasDevice ? "https://art.jabrod.com/jbd" : "https://art.jabrod.com/jbd"} target="_blank" rel="noreferrer" className="nodrag inline-flex h-8 items-center justify-center gap-1.5 rounded-full bg-ink text-[12px] font-medium text-paper hover:bg-white" title={hasDevice ? "Download the files, then add them to your JBD project" : "JBD is Jabrod's free video editor for Windows"}>
           <Play className="size-3.5" /> {hasDevice ? "Edit in JBD" : "Download JBD to edit"}
         </a>
       </div>

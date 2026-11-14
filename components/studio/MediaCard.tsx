@@ -15,14 +15,14 @@ export const MediaCard = memo(function MediaCard({ asset, onOpen, onReuse }: { a
   const url = useAssetUrl(asset)
   const ratio = asset.width && asset.height ? `${asset.width} / ${asset.height}` : asset.kind === "video" ? "16 / 9" : asset.kind === "audio" ? "auto" : "1 / 1"
   return (
-    <figure className="group relative overflow-hidden rounded-2xl border border-[var(--line)] bg-ink-3">
+    <figure className="group relative overflow-hidden rounded-2xl border border-[var(--line)] bg-paper-2">
       {asset.kind === "audio" ? (
         <div className="flex flex-col gap-3 p-4">
           <div className="flex items-center justify-between">
-            <span className="label !text-coral">Audio</span>
+            <span className="label !text-ink/60">Audio</span>
             <span className="font-mono text-[11px] text-[var(--faint)]">{fmtDuration(asset.durationMs)}</span>
           </div>
-          {asset.prompt && <p className="line-clamp-3 text-[13.5px] leading-5 text-cream/80">{asset.prompt}</p>}
+          {asset.prompt && <p className="line-clamp-3 text-[13.5px] leading-5 text-ink/80">{asset.prompt}</p>}
           {url && <audio src={url} controls preload="metadata" className="h-9 w-full" />}
         </div>
       ) : (
@@ -61,12 +61,12 @@ export function Lightbox({ asset, onClose }: { asset: CardAsset | null; onClose:
   const url = useAssetUrl(asset ?? undefined)
   if (!asset) return null
   return (
-    <div className="fixed inset-0 z-[90] grid place-items-center bg-black/85 p-6 backdrop-blur-sm" onClick={onClose} role="dialog" aria-modal="true" aria-label="Image preview" onKeyDown={(e) => e.key === "Escape" && onClose()} tabIndex={-1}>
+    <div className="fixed inset-0 z-[90] grid place-items-center bg-ink/70 p-6 backdrop-blur-sm" onClick={onClose} role="dialog" aria-modal="true" aria-label="Image preview" onKeyDown={(e) => e.key === "Escape" && onClose()} tabIndex={-1}>
       {url && (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={url} alt={asset.prompt ?? ""} className="max-h-full max-w-full rounded-2xl object-contain shadow-2xl" />
       )}
-      {asset.prompt && <p className="absolute bottom-6 left-1/2 max-w-2xl -translate-x-1/2 rounded-2xl bg-black/60 px-4 py-2 text-center text-[13px] leading-5 text-cream/85">{asset.prompt}</p>}
+      {asset.prompt && <p className="absolute bottom-6 left-1/2 max-w-2xl -translate-x-1/2 rounded-2xl bg-black/60 px-4 py-2 text-center text-[13px] leading-5 text-ink/85">{asset.prompt}</p>}
     </div>
   )
 }

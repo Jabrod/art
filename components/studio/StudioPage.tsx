@@ -16,12 +16,10 @@ import { Select } from "@/components/ui/Select"
 import { Lightbox, MediaCard, type CardAsset } from "./MediaCard"
 
 const COPY: Record<MediaKind, { title: string; line: string; placeholder: string; color: string; icon: typeof ImageIcon }> = {
-  image: { title: "Image Studio", line: "Make images that stop the scroll.", placeholder: "A cinematic portrait at golden hour, 85mm, soft rim light", color: "text-magenta", icon: ImageIcon },
-  video: { title: "Video Studio", line: "Turn an idea into a moving shot.", placeholder: "Slow dolly-in on a ceramic mug steaming on a rainy windowsill, 35mm film look", color: "text-blue", icon: Monitor },
-  audio: { title: "Voice Studio", line: "Give your story a voice.", placeholder: "Write the words to speak. Every great story starts with a single frame…", color: "text-coral", icon: AudioLines },
+  image: { title: "Image Studio", line: "Make images that stop the scroll.", placeholder: "A cinematic portrait at golden hour, 85mm, soft rim light", color: "text-ink/60", icon: ImageIcon },
+  video: { title: "Video Studio", line: "Turn an idea into a moving shot.", placeholder: "Slow dolly-in on a ceramic mug steaming on a rainy windowsill, 35mm film look", color: "text-ink/60", icon: Monitor },
+  audio: { title: "Voice Studio", line: "Give your story a voice.", placeholder: "Write the words to speak. Every great story starts with a single frame…", color: "text-ink/60", icon: AudioLines },
 }
-
-const HERO = ["/brand/sky-hero.webp", "/brand/jabrod-art-intro-poster.webp", "/brand/sky-dusk.webp", "/brand/art-painted.png", "/brand/sky-sea.webp"]
 
 const JOBS_KEY = "jabrod-art:video-jobs"
 interface PendingJob {
@@ -181,27 +179,11 @@ export function StudioPage({ kind }: { kind: MediaKind }) {
     inputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
   }, [])
 
-  const heroImages = useMemo(() => {
-    const mine = (assets ?? []).filter((a) => a.kind === "image").slice(0, 5).map((a) => a.url)
-    return [...mine, ...HERO.map(pub)].slice(0, 5)
-  }, [assets])
-
   const ratioOf = (a: string) => a.replace(":", " / ")
   const Icon = copy.icon
 
   return (
-    <div className="h-full overflow-y-auto scroll-thin">
-      {/* Hero */}
-      <div className="relative h-[260px] overflow-hidden sm:h-[300px]">
-        <div className="absolute inset-0 flex -skew-x-6 scale-110 gap-2">
-          {heroImages.map((src, i) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img key={src + i} src={src} alt="" className="h-full min-w-0 flex-1 object-cover opacity-70" />
-          ))}
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/70 to-ink" />
-      </div>
-
+    <>
       <div className="relative mx-auto -mt-36 max-w-4xl px-5 pb-16">
         <div className="rise text-center">
           <p className={`label flex items-center justify-center gap-2 ${copy.color}`}>
@@ -212,7 +194,7 @@ export function StudioPage({ kind }: { kind: MediaKind }) {
         </div>
 
         {/* Composer */}
-        <div className="mt-8 rounded-[26px] border border-[var(--line-strong)] bg-ink-3/90 p-3 shadow-[0_18px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl focus-within:border-cream/25">
+        <div className="mt-8 rounded-[26px] border border-[var(--line-strong)] bg-paper-2/90 p-3 shadow-[var(--lift)] backdrop-blur-xl focus-within:border-ink/25">
           <textarea
             ref={inputRef}
             value={prompt}
@@ -223,7 +205,7 @@ export function StudioPage({ kind }: { kind: MediaKind }) {
             rows={3}
             maxLength={kind === "video" ? 2000 : 4000}
             placeholder={copy.placeholder}
-            className="w-full resize-none bg-transparent px-2 pt-1 text-[15.5px] leading-6 text-cream outline-none placeholder:text-[var(--faint)]"
+            className="w-full resize-none bg-transparent px-2 pt-1 text-[15.5px] leading-6 text-ink outline-none placeholder:text-[var(--faint)]"
             aria-label={kind === "audio" ? "Words to speak" : "Prompt"}
           />
           <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -231,31 +213,31 @@ export function StudioPage({ kind }: { kind: MediaKind }) {
               <>
                 <Select label="Aspect ratio" value={aspect} onChange={setAspect} icon={<RectangleHorizontal className="size-3.5" />} options={["1:1", "16:9", "9:16", "4:3", "3:4"].map((v) => ({ value: v, label: v }))} />
                 <Select label="Number of images" value={count} onChange={setCount} icon={<Layers className="size-3.5" />} options={["1", "2", "3", "4"].map((v) => ({ value: v, label: v }))} />
-                <Select label="Model" value={imageModel} onChange={setImageModel} icon={<Sparkles className="size-3.5 text-violet" />} options={[{ value: "auto", label: "Auto" }, ...models.image.map((m) => ({ value: m.id, label: `${m.label} · ${m.credits} cr` }))]} />
+                <Select label="Model" value={imageModel} onChange={setImageModel} icon={<Sparkles className="size-3.5 text-ink/60" />} options={[{ value: "auto", label: "Auto" }, ...models.image.map((m) => ({ value: m.id, label: `${m.label} · ${m.credits} cr` }))]} />
               </>
             )}
             {kind === "video" && vm && models && (
               <>
-                <Select label="Model" value={vm.id} onChange={setVideoModel} icon={<Sparkles className="size-3.5 text-violet" />} options={models.video.map((m) => ({ value: m.id, label: m.label }))} />
+                <Select label="Model" value={vm.id} onChange={setVideoModel} icon={<Sparkles className="size-3.5 text-ink/60" />} options={models.video.map((m) => ({ value: m.id, label: m.label }))} />
                 <Select label="Length" value={seconds} onChange={setSeconds} icon={<Clock className="size-3.5" />} options={vm.durations.map((d) => ({ value: String(d), label: `${d}s` }))} />
                 <Select label="Aspect ratio" value={aspect} onChange={setAspect} icon={<RectangleHorizontal className="size-3.5" />} options={vm.aspects.map((v) => ({ value: v, label: v }))} />
                 <Select label="Resolution" value={resolution} onChange={setResolution} options={vm.resolutions.map((v) => ({ value: v, label: v }))} />
                 {vm.audio && (
-                  <button className={`chip ${withAudio ? "!border-blue/50 !text-cream" : ""}`} onClick={() => setWithAudio((a) => !a)} aria-pressed={withAudio}>
-                    {withAudio ? <Volume2 className="size-3.5 text-blue" /> : <VolumeX className="size-3.5" />} Sound
+                  <button className={`chip ${withAudio ? "!border-[var(--line-strong)] !text-ink" : ""}`} onClick={() => setWithAudio((a) => !a)} aria-pressed={withAudio}>
+                    {withAudio ? <Volume2 className="size-3.5 text-ink/60" /> : <VolumeX className="size-3.5" />} Sound
                   </button>
                 )}
               </>
             )}
             {kind === "audio" && sm && models && (
               <>
-                <Select label="Voice model" value={sm.id} onChange={setVoiceModel} icon={<Sparkles className="size-3.5 text-violet" />} options={models.voice.map((m) => ({ value: m.id, label: m.label }))} />
+                <Select label="Voice model" value={sm.id} onChange={setVoiceModel} icon={<Sparkles className="size-3.5 text-ink/60" />} options={models.voice.map((m) => ({ value: m.id, label: m.label }))} />
                 {sm.voices.length > 0 && <Select label="Voice" value={voice} onChange={setVoice} icon={<Mic className="size-3.5" />} options={sm.voices.map((v) => ({ value: v, label: v }))} />}
               </>
             )}
             <div className="ml-auto flex items-center gap-3">
               <span className="font-mono text-[11px] text-[var(--faint)]">{prompt.trim() ? creditLabel(cost) : ""}</span>
-              <button onClick={generate} disabled={!prompt.trim() || busy || !models} className="inline-flex h-10 items-center gap-2 rounded-full bg-cream pl-4 pr-3 text-sm font-medium text-ink transition-opacity hover:bg-white disabled:opacity-30">
+              <button onClick={generate} disabled={!prompt.trim() || busy || !models} className="inline-flex h-10 items-center gap-2 rounded-full bg-ink pl-4 pr-3 text-sm font-medium text-paper transition-opacity hover:bg-white disabled:opacity-30">
                 {busy ? <Loader2 className="size-4 animate-spin" /> : null}
                 {kind === "audio" ? "Speak" : "Generate"}
                 {!busy && <ArrowUp className="size-4" />}
@@ -272,9 +254,9 @@ export function StudioPage({ kind }: { kind: MediaKind }) {
         </div>
         <div className={`mt-4 grid gap-3 ${kind === "audio" ? "sm:grid-cols-2" : "grid-cols-2 md:grid-cols-3"}`}>
           {jobs.map((j) => (
-            <div key={j.job} className="generating relative overflow-hidden rounded-2xl border border-blue/25" style={{ aspectRatio: ratioOf(j.aspect) }}>
+            <div key={j.job} className="generating relative overflow-hidden rounded-2xl border border-[var(--line-strong)]" style={{ aspectRatio: ratioOf(j.aspect) }}>
               <div className="absolute inset-x-0 bottom-0 p-3">
-                <p className="flex items-center gap-1.5 text-[12px] text-cream/80"><Loader2 className="size-3.5 animate-spin" /> Making your clip…</p>
+                <p className="flex items-center gap-1.5 text-[12px] text-ink/80"><Loader2 className="size-3.5 animate-spin" /> Making your clip…</p>
                 <p className="mt-1 line-clamp-2 text-[11.5px] leading-4 text-[var(--muted)]">{j.prompt}</p>
               </div>
             </div>
@@ -296,6 +278,6 @@ export function StudioPage({ kind }: { kind: MediaKind }) {
         )}
       </div>
       <Lightbox asset={view} onClose={() => setView(null)} />
-    </div>
+    </>
   )
 }

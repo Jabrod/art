@@ -54,7 +54,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   if (!me.signedIn) return <SignIn href={me.signInUrl ?? "/sign-in?next=/studio"} />
 
   return (
-    <div className="flex h-dvh w-full overflow-hidden bg-ink">
+    <div className="flex h-dvh w-full overflow-hidden bg-paper">
       <Sidebar />
       <main className="relative min-w-0 flex-1">{children}</main>
       <PlansDialog />
@@ -65,16 +65,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
 function Loading() {
   return (
-    <div className="grid h-dvh place-items-center bg-ink" aria-busy="true">
+    <div className="grid h-dvh place-items-center bg-paper" aria-busy="true">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={pub("/brand/jabrod-mark.png")} alt="" className="h-8 w-auto animate-pulse opacity-70 motion-reduce:animate-none" />
+      <img src={pub("/brand/jabrod-mark.png")} alt="" className="mark-ink h-8 w-auto animate-pulse opacity-70 motion-reduce:animate-none" />
     </div>
   )
 }
 
 function Centered({ title, body, action }: { title: string; body: string; action?: React.ReactNode }) {
   return (
-    <div className="grid h-dvh place-items-center bg-ink px-6 text-center">
+    <div className="grid h-dvh place-items-center bg-paper px-6 text-center">
       <div className="max-w-md">
         <h1 className="font-display text-3xl">{title}</h1>
         <p className="mt-3 text-[15px] leading-7 text-[var(--muted)]">{body}</p>
@@ -86,20 +86,20 @@ function Centered({ title, body, action }: { title: string; body: string; action
 
 function SignIn({ href }: { href: string }) {
   return (
-    <div className="relative grid h-dvh place-items-center overflow-hidden bg-ink px-6">
+    <div className="relative grid h-dvh place-items-center overflow-hidden bg-paper px-6">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={pub("/brand/jabrod-art-intro-poster.webp")} alt="" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25 blur-[2px]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#0a090c_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,var(--color-paper)_70%)]" />
       <div className="rise relative max-w-lg text-center">
         <div className="flex items-center justify-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={pub("/brand/jabrod-mark.png")} alt="Jabrod" className="h-8 w-auto" />
+          <img src={pub("/brand/jabrod-mark.png")} alt="Jabrod" className="mark-ink h-8 w-auto" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={pub("/brand/art-wordmark.png")} alt="Art" className="-mt-1 h-8 w-auto" />
         </div>
         <p className="label mt-8">Art Studio</p>
         <h1 className="font-display mt-4 text-5xl sm:text-6xl">
-          Generate. <span className="paint-text">Edit.</span>
+          Generate. <span className="brush-underline">Edit.</span>
         </h1>
         <p className="mx-auto mt-5 max-w-sm text-[15px] leading-7 text-[var(--muted)]">
           Images, video and voice, together on one canvas.

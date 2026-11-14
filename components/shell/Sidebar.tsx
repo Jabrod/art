@@ -8,11 +8,11 @@ import { pub, useApp } from "@/lib/app-state"
 import { store } from "@/lib/store"
 
 const NAV = [
-  { href: "/image", label: "Image Studio", icon: ImageIcon, color: "text-magenta" },
-  { href: "/video", label: "Video Studio", icon: Clapperboard, color: "text-blue" },
-  { href: "/voice", label: "Voice Studio", icon: AudioLines, color: "text-coral" },
-  { href: "/boards", label: "Canvas", icon: LayoutGrid, color: "text-violet" },
-  { href: "/library", label: "Library", icon: Library, color: "text-cream/70" },
+  { href: "/image", label: "Image Studio", icon: ImageIcon, color: "text-ink/60" },
+  { href: "/video", label: "Video Studio", icon: Clapperboard, color: "text-ink/60" },
+  { href: "/voice", label: "Voice Studio", icon: AudioLines, color: "text-ink/60" },
+  { href: "/boards", label: "Canvas", icon: LayoutGrid, color: "text-ink/60" },
+  { href: "/library", label: "Library", icon: Library, color: "text-ink/70" },
 ]
 
 function groupByDay(chats: { updatedAt: string }[]) {
@@ -50,7 +50,7 @@ export function Sidebar() {
 
   if (!sidebarOpen) {
     return (
-      <div className="flex w-14 shrink-0 flex-col items-center gap-2 border-r border-[var(--line)] bg-ink-2 py-3">
+      <div className="flex w-14 shrink-0 flex-col items-center gap-2 border-r border-[var(--line)] bg-paper-2 py-3">
         <button onClick={() => setSidebar(true)} className="icon-btn" aria-label="Open sidebar">
           <PanelLeftOpen className="size-4" />
         </button>
@@ -58,7 +58,7 @@ export function Sidebar() {
           <MessageSquarePlus className="size-4" />
         </Link>
         {NAV.map((n) => (
-          <Link key={n.href} href={n.href} className={`icon-btn ${pathname.startsWith(n.href) ? "bg-white/[0.07]" : ""}`} aria-label={n.label} title={n.label}>
+          <Link key={n.href} href={n.href} className={`icon-btn ${pathname.startsWith(n.href) ? "bg-ink/[0.07]" : ""}`} aria-label={n.label} title={n.label}>
             <n.icon className={`size-4 ${n.color}`} />
           </Link>
         ))}
@@ -70,13 +70,13 @@ export function Sidebar() {
   const pct = credits && credits.limit > 0 ? Math.min(100, (credits.used / credits.limit) * 100) : 0
 
   return (
-    <aside className="flex w-[264px] shrink-0 flex-col border-r border-[var(--line)] bg-ink-2">
+    <aside className="flex w-[264px] shrink-0 flex-col border-r border-[var(--line)] bg-paper-2">
       <div className="flex items-center justify-between px-4 pb-2 pt-4">
         <Link href="/" className="flex items-center gap-1.5" aria-label="Jabrod Art Studio">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={pub("/brand/jabrod-mark.png")} alt="" className="h-6 w-auto" />
-          <span className="text-[17px] font-medium lowercase tracking-[-0.03em] text-cream">jabrod</span>
-          <span className="label ml-1 !text-[9.5px] !text-cream/50">art</span>
+          <img src={pub("/brand/jabrod-mark.png")} alt="" className="mark-ink h-6 w-auto" />
+          <span className="text-[17px] font-medium lowercase tracking-[-0.03em] text-ink">jabrod</span>
+          <span className="label ml-1 !text-[9.5px] !text-ink/50">art</span>
         </Link>
         <div className="flex items-center">
           <button onClick={() => setSearching((s) => !s)} className="icon-btn" aria-label="Search chats">
@@ -96,7 +96,7 @@ export function Sidebar() {
 
       <nav className="px-2" aria-label="Studio">
         <Link href="/" onClick={newChat} className={`nav-item ${pathname === "/" ? "nav-active" : ""}`}>
-          <MessageSquarePlus className="size-[17px] text-cream/80" /> New chat
+          <MessageSquarePlus className="size-[17px] text-ink/80" /> New chat
         </Link>
         {NAV.map((n) => (
           <Link key={n.href} href={n.href} className={`nav-item ${pathname.startsWith(n.href) || (n.href === "/boards" && pathname.startsWith("/b/")) ? "nav-active" : ""}`}>
@@ -112,7 +112,7 @@ export function Sidebar() {
             <p className="label px-3 pb-1 pt-2 !text-[9.5px]">{g.label}</p>
             {g.items.map((c) => (
               <div key={c.id} className="group relative">
-                <Link href={`/c/${c.id}`} className={`block truncate rounded-xl py-2 pl-3 pr-8 text-[13.5px] ${pathname === `/c/${c.id}` ? "bg-white/[0.07] text-cream" : "text-cream/70 hover:bg-white/[0.04] hover:text-cream"}`}>
+                <Link href={`/c/${c.id}`} className={`block truncate rounded-xl py-2 pl-3 pr-8 text-[13.5px] ${pathname === `/c/${c.id}` ? "bg-ink/[0.07] text-ink" : "text-ink/70 hover:bg-ink/[0.04] hover:text-ink"}`}>
                   {c.title}
                 </Link>
                 <button
@@ -126,7 +126,7 @@ export function Sidebar() {
                       toast(e instanceof Error ? e.message : "Couldn't delete the chat.", "error")
                     }
                   }}
-                  className="absolute right-1.5 top-1/2 hidden -translate-y-1/2 rounded-lg p-1.5 text-[var(--faint)] hover:text-magenta group-hover:block"
+                  className="absolute right-1.5 top-1/2 hidden -translate-y-1/2 rounded-lg p-1.5 text-[var(--faint)] hover:text-ink/60 group-hover:block"
                   aria-label={`Delete ${c.title}`}
                 >
                   <Trash2 className="size-3.5" />
@@ -139,29 +139,29 @@ export function Sidebar() {
 
       <div className="border-t border-[var(--line)] p-3">
         {credits && store.mode === "remote" && (
-          <div className="rounded-2xl border border-[var(--line)] bg-white/[0.02] p-3">
-            <button onClick={() => openPlans()} className="-m-1 flex w-[calc(100%+8px)] items-center justify-between rounded-lg p-1 text-left hover:bg-white/[0.03]" title="See plans">
-              <span className="flex items-center gap-1.5 text-[13px] text-cream/85">
-                <Sparkles className="size-3.5 text-violet" /> {credits.pro ? "Art Pro" : "Free plan"}
+          <div className="rounded-2xl border border-[var(--line)] bg-ink/[0.02] p-3">
+            <button onClick={() => openPlans()} className="-m-1 flex w-[calc(100%+8px)] items-center justify-between rounded-lg p-1 text-left hover:bg-ink/[0.03]" title="See plans">
+              <span className="flex items-center gap-1.5 text-[13px] text-ink/85">
+                <Sparkles className="size-3.5 text-ink/60" /> {credits.pro ? "Art Pro" : "Free plan"}
               </span>
               <span className="font-mono text-[11px] text-[var(--faint)]">
                 {credits.left}/{credits.limit}
               </span>
             </button>
-            <div className="mt-2 h-1 overflow-hidden rounded-full bg-white/[0.06]">
-              <div className="paint-bg h-full rounded-full transition-[width] duration-500" style={{ width: `${100 - pct}%` }} />
+            <div className="mt-2 h-1 overflow-hidden rounded-full bg-ink/[0.06]">
+              <div className="h-full rounded-full bg-ink/70 transition-[width] duration-500" style={{ width: `${100 - pct}%` }} />
             </div>
             <p className="mt-2 text-[11.5px] text-[var(--faint)]">credits left this month</p>
-            <button onClick={() => openPlans()} className={`mt-3 flex h-9 w-full items-center justify-center rounded-xl text-[13px] font-medium ${credits.pro ? "border border-[var(--line)] text-cream/80 hover:bg-white/[0.04]" : "bg-cream text-ink hover:bg-white"}`}>
+            <button onClick={() => openPlans()} className={`mt-3 flex h-9 w-full items-center justify-center rounded-xl text-[13px] font-medium ${credits.pro ? "border border-[var(--line)] text-ink/80 hover:bg-ink/[0.04]" : "bg-ink text-paper hover:bg-white"}`}>
               {credits.pro ? "Your plan" : "See plans"}
             </button>
           </div>
         )}
         {store.mode === "local" && <p className="rounded-2xl border border-[var(--line)] p-3 text-[12px] leading-5 text-[var(--muted)]">Local mode: boards stay in this browser. AI needs art.jabrod.com.</p>}
         <div className="mt-3 flex items-center gap-2.5 px-1">
-          <span className="grid size-8 place-items-center rounded-full bg-violet/25 text-[13px] font-medium uppercase text-cream">{(me?.user?.name ?? "?").slice(0, 1)}</span>
+          <span className="grid size-8 place-items-center rounded-full bg-ink/[0.06] text-[13px] font-medium uppercase text-ink">{(me?.user?.name ?? "?").slice(0, 1)}</span>
           <div className="min-w-0">
-            <p className="truncate text-[13px] text-cream">{me?.user?.name}</p>
+            <p className="truncate text-[13px] text-ink">{me?.user?.name}</p>
             <p className="truncate text-[11px] text-[var(--faint)]">{me?.user?.email}</p>
           </div>
           {store.mode === "remote" && (

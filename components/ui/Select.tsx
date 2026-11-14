@@ -26,7 +26,7 @@ export function Select<T extends string>({
       <ChevronDown className="pointer-events-none absolute right-2.5 size-3.5 text-[var(--faint)]" />
       <select value={value} onChange={(e) => onChange(e.target.value as T)} className="absolute inset-0 cursor-pointer opacity-0" aria-label={label}>
         {options.map((o) => (
-          <option key={o.value} value={o.value} className="bg-ink-3 text-cream">
+          <option key={o.value} value={o.value} className="bg-paper-2 text-ink">
             {o.label}
           </option>
         ))}

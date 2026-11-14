@@ -19,7 +19,7 @@ export function CopyButton({ text, className = "" }: { text: string; className?:
       aria-label="Copy"
       title="Copy"
     >
-      {done ? <Check className="size-3.5 text-mint" /> : <Copy className="size-3.5" />}
+      {done ? <Check className="size-3.5 text-ink/60" /> : <Copy className="size-3.5" />}
     </button>
   )
 }
@@ -48,7 +48,7 @@ export const Markdown = memo(function Markdown({ text, renderPrompt }: { text: s
             const content = raw.replace(/\n$/, "")
             if (lang === "prompt" && renderPrompt) return <>{renderPrompt(content)}</>
             return (
-              <div className="overflow-hidden rounded-xl border border-[var(--line)] bg-black/30">
+              <div className="overflow-hidden rounded-xl border border-[var(--line)] bg-ink/[0.03]">
                 <div className="flex items-center justify-between border-b border-[var(--line)] px-3 py-1">
                   <span className="label !text-[9.5px]">{lang ?? "text"}</span>
                   <CopyButton text={content} />

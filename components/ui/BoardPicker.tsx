@@ -60,16 +60,16 @@ export function BoardPicker({ items, label = "Add to board", className = "btn-gh
         <LayoutGrid className="size-3.5" /> {label}
       </button>
       {open && (
-        <div role="menu" className={`rise absolute z-50 w-64 ${below ? "top-full mt-2" : "bottom-full mb-2"} overflow-hidden rounded-2xl border border-[var(--line-strong)] bg-ink-3 p-1.5 shadow-[0_16px_50px_rgba(0,0,0,0.6)] ${align === "right" ? "right-0" : "left-0"}`}>
-          <button disabled={busy} onClick={() => add(null)} className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-[13px] text-cream hover:bg-white/[0.06]">
-            <Plus className="size-3.5 text-violet" /> New board
+        <div role="menu" className={`rise absolute z-50 w-64 ${below ? "top-full mt-2" : "bottom-full mb-2"} overflow-hidden rounded-2xl border border-[var(--line-strong)] bg-paper-2 p-1.5 shadow-[var(--lift)] ${align === "right" ? "right-0" : "left-0"}`}>
+          <button disabled={busy} onClick={() => add(null)} className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-[13px] text-ink hover:bg-ink/[0.06]">
+            <Plus className="size-3.5 text-ink/60" /> New board
           </button>
           <div className="my-1 h-px bg-[var(--line)]" />
           <div className="max-h-60 overflow-y-auto scroll-thin">
             {!boards && <p className="flex items-center gap-2 px-3 py-2 text-[13px] text-[var(--faint)]"><Loader2 className="size-3.5 animate-spin" /> Loading boards</p>}
             {boards?.length === 0 && <p className="px-3 py-2 text-[13px] text-[var(--faint)]">No boards yet.</p>}
             {boards?.map((b) => (
-              <button key={b.id} disabled={busy} onClick={() => add(b.id)} className="block w-full truncate rounded-xl px-3 py-2 text-left text-[13px] text-cream/80 hover:bg-white/[0.06] hover:text-cream">
+              <button key={b.id} disabled={busy} onClick={() => add(b.id)} className="block w-full truncate rounded-xl px-3 py-2 text-left text-[13px] text-ink/80 hover:bg-ink/[0.06] hover:text-ink">
                 {b.title}
               </button>
             ))}

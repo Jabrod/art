@@ -4,13 +4,14 @@ import { FRAME, mediaHeight, type ArtNode, type AssetRef, type BoardDoc, type No
 export const HEADER = 34
 export const FOOTER = 46
 
+/** Each kind's dab: paint sampled from the "Introducing Jabrod ART" film strokes (globals.css). */
 export const KIND_COLOR: Record<NodeKind, string> = {
-  prompt: "#a24bff",
-  note: "#f3eee2",
-  image: "#ff3d8b",
-  video: "#3f7dff",
-  audio: "#ff8a3d",
-  export: "#34d399",
+  prompt: "#d34265",
+  note: "rgba(243,238,226,0.55)",
+  image: "#aa256c",
+  video: "#265c95",
+  audio: "#e5675b",
+  export: "#54207d",
 }
 
 export const KIND_LABEL: Record<NodeKind, string> = {

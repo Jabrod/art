@@ -51,7 +51,7 @@ export default function LibraryPage() {
 
         <div className="mt-8 flex gap-1.5" role="tablist">
           {TABS.map((t) => (
-            <button key={t.value} role="tab" aria-selected={tab === t.value} onClick={() => setTab(t.value)} className={`chip ${tab === t.value ? "!border-cream/30 !bg-white/[0.07] !text-cream" : ""}`}>
+            <button key={t.value} role="tab" aria-selected={tab === t.value} onClick={() => setTab(t.value)} className={`chip ${tab === t.value ? "!border-ink/30 !bg-ink/[0.07] !text-ink" : ""}`}>
               {t.label}
             </button>
           ))}
