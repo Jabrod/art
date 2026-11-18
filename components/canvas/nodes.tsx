@@ -257,8 +257,8 @@ export const ExportNode = memo(function ExportNode({ id, selected }: NodeProps<F
         <button disabled={media.length === 0} onClick={() => media.forEach((m, i) => setTimeout(() => downloadAsset(m), i * 400))} className="nodrag btn-ghost !h-8 w-full !text-[12px]">
           <Download className="size-3.5" /> Download all ({media.length})
         </button>
-        <a href={hasDevice ? "https://art.jabrod.com/jbd" : "https://art.jabrod.com/jbd"} target="_blank" rel="noreferrer" className="nodrag inline-flex h-8 items-center justify-center gap-1.5 rounded-full bg-ink text-[12px] font-medium text-paper hover:bg-white" title={hasDevice ? "Download the files, then add them to your JBD project" : "JBD is Jabrod's free video editor for Windows"}>
-          <Play className="size-3.5" /> {hasDevice ? "Edit in JBD" : "Download JBD to edit"}
+        <a href="/studio/editor" className="nodrag inline-flex h-8 items-center justify-center gap-1.5 rounded-full bg-ink text-[12px] font-medium text-paper hover:bg-white" title="Open the Editor, then Open from Library to bring these files in">
+          <Play className="size-3.5" /> Edit in the Editor
         </a>
       </div>
     </Frame>
