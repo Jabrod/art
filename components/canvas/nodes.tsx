@@ -7,6 +7,8 @@
  */
 import { memo, useMemo, useRef } from "react"
 import { Handle, NodeResizer, Position, type NodeProps } from "@xyflow/react"
+import { Scissors } from "lucide-react"
+import { editorHref } from "@/lib/editor"
 import { AlertTriangle, ArrowRight, AudioLines, Clapperboard, Download, FileDown, Image as ImageIcon, Loader2, NotebookPen, Play, Sparkles, Upload } from "lucide-react"
 import { incomingMedia, type NodeKind } from "@/lib/board"
 import { useApp } from "@/lib/app-state"
@@ -182,7 +184,20 @@ export const ImageNode = memo(function ImageNode({ id, data, selected }: NodePro
 export const VideoNode = memo(function VideoNode({ id, data, selected }: NodeProps<FlowNode>) {
   const url = useAssetUrl(data.asset)
   return (
-    <Frame id={id} kind="video" selected={selected} minH={200} right={data.asset && <IconAction label="Download" onClick={() => downloadAsset(data.asset!)} icon={Download} />}>
+    <Frame
+      id={id}
+      kind="video"
+      selected={selected}
+      minH={200}
+      right={
+        data.asset && (
+          <>
+            {!data.asset.url.startsWith("idb:") && <IconAction label="Open in Editor" onClick={() => window.location.assign(editorHref(data.asset!))} icon={Scissors} />}
+            <IconAction label="Download" onClick={() => downloadAsset(data.asset!)} icon={Download} />
+          </>
+        )
+      }
+    >
       <div className="relative min-h-0 flex-1 bg-black">
         {data.asset && url && data.status !== "working" ? (
           <video src={url} controls preload="metadata" playsInline className="nodrag absolute inset-0 h-full w-full object-contain" />

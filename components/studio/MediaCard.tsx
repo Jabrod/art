@@ -1,7 +1,8 @@
 "use client"
 
 import { memo } from "react"
-import { Download, Maximize2, RotateCcw } from "lucide-react"
+import { Download, Maximize2, RotateCcw, Scissors } from "lucide-react"
+import { editorHref } from "@/lib/editor"
 import type { AssetRef } from "@/lib/board"
 import { downloadAsset, fmtDuration, useAssetUrl } from "@/lib/media"
 import { BoardPicker } from "@/components/ui/BoardPicker"
@@ -47,6 +48,11 @@ export const MediaCard = memo(function MediaCard({ asset, onOpen, onReuse }: { a
           <button className="icon-btn bg-black/40 backdrop-blur" title="View" aria-label="View" onClick={onOpen}>
             <Maximize2 className="size-3.5" />
           </button>
+        )}
+        {asset.kind !== "image" && !asset.url.startsWith("idb:") && (
+          <a className="icon-btn bg-black/40 backdrop-blur" title="Open in Editor" aria-label="Open in Editor" href={editorHref(asset)}>
+            <Scissors className="size-3.5" />
+          </a>
         )}
         <button className="icon-btn bg-black/40 backdrop-blur" title="Download" aria-label="Download" onClick={() => downloadAsset(asset)}>
           <Download className="size-3.5" />

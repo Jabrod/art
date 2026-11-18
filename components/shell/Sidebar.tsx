@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
-import { AudioLines, Clapperboard, Image as ImageIcon, Library, LayoutGrid, LogOut, MessageSquarePlus, PanelLeftClose, PanelLeftOpen, Search, Trash2, Sparkles } from "lucide-react"
+import { AudioLines, Clapperboard, Image as ImageIcon, Library, LayoutGrid, LogOut, MessageSquarePlus, Scissors, PanelLeftClose, PanelLeftOpen, Search, Trash2, Sparkles } from "lucide-react"
 import { pub, useApp } from "@/lib/app-state"
 import { store } from "@/lib/store"
 
@@ -12,6 +12,7 @@ const NAV = [
   { href: "/video", label: "Video Studio", icon: Clapperboard, color: "text-ink/60" },
   { href: "/voice", label: "Voice Studio", icon: AudioLines, color: "text-ink/60" },
   { href: "/boards", label: "Canvas", icon: LayoutGrid, color: "text-ink/60" },
+  { href: "/editor", label: "Editor", icon: Scissors, color: "text-ink/60" },
   { href: "/library", label: "Library", icon: Library, color: "text-ink/70" },
 ]
 
