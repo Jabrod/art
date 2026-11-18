@@ -119,7 +119,7 @@ export function EditorPage() {
     <div className="flex h-full flex-col">
       <div className="flex h-12 shrink-0 items-center gap-2 border-b border-[var(--line)] px-3">
         <span className="text-[14px] font-medium text-ink">Editor</span>
-        <span className="text-[12px] text-[var(--faint)]">JBD in your browser</span>
+        <span className="text-[12px] text-[var(--faint)]">Video editor</span>
         <div className="ml-auto flex items-center gap-2">
           {busy && (
             <span className="flex items-center gap-1.5 text-[12px] text-[var(--muted)]">
@@ -136,7 +136,7 @@ export function EditorPage() {
       </div>
 
       <div className="relative min-h-0 flex-1">
-        <iframe ref={frame} src={`${BASE}/editor-app/index.html`} title="JBD editor" className="absolute inset-0 h-full w-full border-0 bg-paper" allow="autoplay; clipboard-read; clipboard-write" />
+        <iframe ref={frame} src={`${BASE}/editor-app/index.html`} title="Editor" className="absolute inset-0 h-full w-full border-0 bg-paper" allow="autoplay; clipboard-read; clipboard-write" />
         {!ready && (
           <div className="pointer-events-none absolute inset-0 grid place-items-center bg-paper text-[13px] text-[var(--muted)]">
             <span className="flex items-center gap-2">

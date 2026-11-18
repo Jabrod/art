@@ -14,16 +14,16 @@ import { ART_PRO_PRICES, ArtError, store, type Billing, type Currency, type Inte
 const FREE = [
   "The whole studio: chat, image, video and voice, canvas boards and the Library",
   "50 AI credits every month",
-  "JBD, the free video editor for Windows (exports up to 720p with a small mark)",
+  "Art Studio for Windows (JBD): the full editor, exports up to 720p with a small mark",
 ]
 
 const PRO = [
-  "1,000 AI credits every month, for the studio and JBD's AI Director",
-  "The AI Director in JBD, Make a reel, silence and filler removal",
-  "JBD exports in 1080p and 4K, with no watermark",
+  "1,000 AI credits every month, for Art Studio and the AI Director",
+  "The AI Director in Art Studio for Windows (JBD): Make a reel, silence and filler removal",
+  "Exports in 1080p and 4K, with no watermark",
   "Every caption style, Hinglish captions in Roman script",
   "Zoom, slide and Ken Burns animations",
-  "Use JBD on 2 computers",
+  "Use Art Studio for Windows (JBD) on 2 computers",
 ]
 
 const money = (minor: number, currency: Currency) =>

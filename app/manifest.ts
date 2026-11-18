@@ -9,8 +9,8 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/studio",
     name: "Jabrod Art Studio",
-    short_name: "Studio",
-    description: "Chat, images, video and voice on one canvas, and the JBD editor. By Jabrod.",
+    short_name: "Art Studio",
+    description: "Images, video and voice on one canvas, with a video editor built in. By Jabrod.",
     start_url: "/studio",
     scope: "/studio",
     display: "standalone",

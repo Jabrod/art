@@ -154,7 +154,7 @@ export function Inspector({ node }: { node: FlowNode }) {
           </>
         )}
         {(kind === "prompt" || kind === "note") && <p className="text-[12.5px] leading-5 text-[var(--muted)]">{kind === "prompt" ? "Connect this prompt (drag from its right dot) into image, video or audio nodes. Several prompts can feed one node; they're joined in the order you connected them." : "Notes are for you. Connect one into a generator to add it to the prompt."}</p>}
-        {kind === "export" && <p className="text-[12.5px] leading-5 text-[var(--muted)]">Everything connected here can be downloaded together. JBD, Jabrod's free video editor for Windows, edits the clips, voice and images into a finished video.</p>}
+        {kind === "export" && <p className="text-[12.5px] leading-5 text-[var(--muted)]">Everything connected here can be downloaded together, or opened in the Editor to cut the clips, voice and images into a finished video.</p>}
       </div>
     </div>
   )

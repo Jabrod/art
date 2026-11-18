@@ -58,7 +58,7 @@ export default function BoardsPage() {
               <LayoutGrid className="size-3.5" /> Canvas
             </p>
             <h1 className="font-display mt-3 text-5xl">Boards</h1>
-            <p className="mt-3 max-w-lg text-[15px] leading-7 text-[var(--muted)]">An infinite canvas for each project. Connect prompts to images, video and voice, then take it all to JBD.</p>
+            <p className="mt-3 max-w-lg text-[15px] leading-7 text-[var(--muted)]">An infinite canvas for each project. Connect prompts to images, video and voice, then edit it all in the Editor.</p>
           </div>
           <button className="btn-primary" onClick={create} disabled={creating}>
             {creating ? <Loader2 className="size-4 animate-spin" /> : <Plus className="size-4" />} New board

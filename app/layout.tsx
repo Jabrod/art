@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Chat, generate and edit: images, video and voice on one infinite canvas. Open source, by Jabrod.",
   robots: { index: false },
   icons: { icon: "/studio/icons/icon-192.png", apple: "/studio/icons/apple-touch-icon.png" },
-  appleWebApp: { capable: true, title: "Studio", statusBarStyle: "black-translucent" },
+  appleWebApp: { capable: true, title: "Art Studio", statusBarStyle: "black-translucent" },
 }
 
 export const viewport: Viewport = { themeColor: "#0a090c", colorScheme: "dark" }
