@@ -9,6 +9,19 @@ const nextConfig: NextConfig = {
   basePath: "/studio",
   allowedDevOrigins: ["art.localhost", "localhost", "127.0.0.1"],
   images: { unoptimized: true },
+  // The service worker controls /studio itself as well as /studio/…, which is one level above
+  // the script's own folder, so it has to be allowed explicitly. (Paths here exclude basePath.)
+  async headers() {
+    return [
+      {
+        source: "/sw.js",
+        headers: [
+          { key: "Service-Worker-Allowed", value: "/studio" },
+          { key: "Cache-Control", value: "no-cache" },
+        ],
+      },
+    ]
+  },
 }
 
 export default nextConfig

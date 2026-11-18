@@ -3,6 +3,8 @@
 import { useEffect } from "react"
 import { useApp, pub } from "@/lib/app-state"
 import { store } from "@/lib/store"
+import { startInstall } from "@/lib/install"
+import { InstallButton } from "./InstallButton"
 import { PlansDialog } from "./PlansDialog"
 import { Sidebar } from "./Sidebar"
 import { Toasts } from "./Toasts"
@@ -12,6 +14,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const { me, meError, loadMe, loadChats, loadModels } = useApp()
 
   useEffect(() => {
+    startInstall()
     loadMe()
     loadModels()
   }, [loadMe, loadModels])
@@ -104,7 +107,10 @@ function SignIn({ href }: { href: string }) {
         <p className="mx-auto mt-5 max-w-sm text-[15px] leading-7 text-[var(--muted)]">
           Images, video and voice, together on one canvas.
         </p>
-        <a href={href} className="btn-primary mt-8 inline-flex">Sign in to Jabrod</a>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a href={href} className="btn-primary inline-flex">Sign in to Jabrod</a>
+          <InstallButton className="btn-ghost !h-10" />
+        </div>
         <p className="mt-4 text-xs text-[var(--faint)]">Free every month: 50 AI credits. Open source on GitHub.</p>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
 import { AudioLines, Clapperboard, Image as ImageIcon, Library, LayoutGrid, LogOut, MessageSquarePlus, Scissors, PanelLeftClose, PanelLeftOpen, Search, Trash2, Sparkles } from "lucide-react"
 import { pub, useApp } from "@/lib/app-state"
+import { InstallButton } from "./InstallButton"
 import { store } from "@/lib/store"
 
 const NAV = [
@@ -159,6 +160,7 @@ export function Sidebar() {
           </div>
         )}
         {store.mode === "local" && <p className="rounded-2xl border border-[var(--line)] p-3 text-[12px] leading-5 text-[var(--muted)]">Local mode: boards stay in this browser. AI needs art.jabrod.com.</p>}
+        <InstallButton className="btn-ghost mt-3 !h-9 w-full" />
         <div className="mt-3 flex items-center gap-2.5 px-1">
           <span className="grid size-8 place-items-center rounded-full bg-ink/[0.06] text-[13px] font-medium uppercase text-ink">{(me?.user?.name ?? "?").slice(0, 1)}</span>
           <div className="min-w-0">

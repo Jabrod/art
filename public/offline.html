@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a090c" />
+    <title>Jabrod Art Studio</title>
+    <style>
+      html, body { height: 100%; margin: 0; background: #0a090c; color: #f3eee2; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+      main { min-height: 100%; display: grid; place-items: center; padding: 24px; box-sizing: border-box; text-align: center; }
+      img { width: 40px; height: auto; opacity: 0.9; }
+      h1 { font-weight: 500; letter-spacing: -0.03em; font-size: 28px; margin: 20px 0 8px; }
+      p { color: rgb(255 255 255 / 0.55); font-size: 15px; line-height: 1.6; margin: 0 auto; max-width: 340px; }
+      button { margin-top: 24px; height: 40px; padding: 0 20px; border-radius: 999px; border: 0; background: #f3eee2; color: #0a090c; font-size: 14px; font-weight: 500; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div>
+        <img src="/studio/icons/icon-192.png" alt="" />
+        <h1>You're offline</h1>
+        <p>The Studio needs a connection: your boards, chats and generations live in your Jabrod account. Reconnect and try again.</p>
+        <button onclick="location.reload()">Try again</button>
+      </div>
+    </main>
+  </body>
+</html>
