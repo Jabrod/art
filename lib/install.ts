@@ -23,6 +23,24 @@ interface InstallState {
 
 export const useInstall = create<InstallState>(() => ({ prompt: null, installed: false, ios: false, canOffer: false }))
 
+
+const COUNTED = 'jabrod-art:install-counted'
+/** Counts this install once (POST /api/art/installed; needs a signed-in session, so it retries later if not). */
+function reportInstall() {
+  try {
+    if (localStorage.getItem(COUNTED) === '1') return
+  } catch {}
+  fetch('/api/art/installed', { method: 'POST', credentials: 'include' })
+    .then((r) => {
+      if (r.ok) {
+        try {
+          localStorage.setItem(COUNTED, '1')
+        } catch {}
+      }
+    })
+    .catch(() => undefined)
+}
+
 let started = false
 
 /** Call once on the client (AppShell). */
@@ -34,12 +52,16 @@ export function startInstall() {
   const ios = /iPad|iPhone|iPod/.test(ua) || (ua.includes("Mac") && "ontouchend" in document)
   const safari = ios && !/CriOS|FxiOS|EdgiOS/.test(ua)
   useInstall.setState({ installed: standalone, ios: safari, canOffer: !standalone && safari })
+  if (standalone) reportInstall()
 
   window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault()
     useInstall.setState({ prompt: e as PromptEvent, canOffer: !useInstall.getState().installed })
   })
-  window.addEventListener("appinstalled", () => useInstall.setState({ installed: true, prompt: null, canOffer: false }))
+  window.addEventListener("appinstalled", () => {
+    useInstall.setState({ installed: true, prompt: null, canOffer: false })
+    reportInstall()
+  })
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/studio/sw.js", { scope: "/studio" }).catch(() => undefined)
